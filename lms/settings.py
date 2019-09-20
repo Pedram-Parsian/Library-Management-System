@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'captcha',
     'bootstrap_modal_forms',
     'users.apps.UsersConfig',
+    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
