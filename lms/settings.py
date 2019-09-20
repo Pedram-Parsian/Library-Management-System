@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'captcha',
     'bootstrap_modal_forms',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
