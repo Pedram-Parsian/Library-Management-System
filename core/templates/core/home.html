@@ -1,4 +1,241 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Library - Home{% endblock %}
+{% block css %}
+{% endblock %}
 {% block content %}
-<h1>Welcome to homepage!</h1>
+  <div class="container-fluid px-0">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+          <div class="d-flex flex-column align-items-center justify-content-center min-vh-100 wallpaper1">
+            <h4 class="typewriter1 text-white"></h4>
+            <h1 class="display-2 font-weight-bold typewriter2 text-white"></h1>
+            <h3 class="typewriter3 text-white"></h3>
+            <div class="carousel-caption d-none d-md-block">
+              <a href="#more" class="btn btn-outline-warning mb-0 mt-5">Find out more</a>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex align-items-center justify-content-center min-vh-100 wallpaper2">
+            <h1 class="display-4 text-white">Check out the <a class="btn btn-outline-light" href="">list of documents</a></h1>
+
+          </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+  <div class="container my-4 text-center" id="more">
+    <div class="row">
+      <div class="col text-center">
+        <h2 class="h1">Profile</h2>
+        <hr>
+      </div>
+    </div>
+    <div class="row mt-1 mb-5 h-100">
+      <div class="col-4">
+        <h6 class="mt-4 mb-3 font-weight-bold">About</h6>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere nesciunt recusandae magni eligendi aliquid saepe iusto eius? Provident, esse dignissimos! Cumque praesentium saepe unde. Est mollitia obcaecati earum quasi inventore?</p>
+      </div>
+      <div class="col-4 d-flex align-items-center justify-content-center">
+        <img src="{% static 'img/logo.png' %}" height="256" width="256" class="rounded-circle" alt="">
+      </div>
+      <div class="col-4">
+        <h6 class="mt-4 mb-3 font-weight-bold">Details</h6>
+        <p class="text-left">
+          <strong>Name:</strong>
+          <br>
+          Open Source Library
+          <br>
+          <strong>Documents</strong>
+          <br>
+          15,650,00
+          <br>
+          <strong>Location:</strong>
+          <br>
+          Tehran / Iran
+        </p>
+      </div>
+    </div>
+    <div class="row pt-5">
+      <div class="col text-center">
+        <h2 class="h1">Don't miss the news!</h2>
+        <small class="font-italic my-0">latest blog posts</small>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      {% for post in recent_posts %}
+        <div class="col-lg-4 my-3">
+          <div class="card">
+            <img src="{{ post.image.url }}" class="card-img-top" alt="{{post.title}} Image">
+            <div class="card-body">
+              <h4 class="card-title font-weight-bold">
+                {{post.title}}
+              </h4>
+              <small class="mb-1">
+                {{post.date_published|date:"F Y"}}
+              </small>
+            </div>
+            <div class="card-footer">
+              <a href="{% url 'post' post.slug %}" class="btn btn-info btn-block font-weight-bold">Read Post</a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-lg-4 my-3">
+          <div class="card">
+            <img src="{% static 'img/no_pic.png' %}" class="card-img-top" alt="{{post.title}} Image">
+            <div class="card-body">
+              <h4 class="card-title font-weight-bold">
+                Oops! Nothing to say!
+              </h4>
+              <small class="mb-1">
+                2019/9/20
+              </small>
+            </div>
+            <div class="card-footer">
+              <a href="" class="btn btn-info btn-block font-weight-bold disabled">Read Post</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 my-3">
+          <div class="card">
+            <img src="{% static 'img/no_pic.png' %}" class="card-img-top" alt="{{post.title}} Image">
+            <div class="card-body">
+              <h4 class="card-title font-weight-bold">
+                Oops! Nothing to say!
+              </h4>
+              <small class="mb-1">
+                2019/9/20
+              </small>
+            </div>
+            <div class="card-footer">
+              <a href="" class="btn btn-info btn-block font-weight-bold disabled">Read Post</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 my-3">
+          <div class="card">
+            <img src="{% static 'img/no_pic.png' %}" class="card-img-top" alt="{{post.title}} Image">
+            <div class="card-body">
+              <h4 class="card-title font-weight-bold">
+                Oops! Nothing to say!
+              </h4>
+              <small class="mb-1">
+                2019/9/20
+              </small>
+            </div>
+            <div class="card-footer">
+              <a href="" class="btn btn-info btn-block font-weight-bold disabled">Read Post</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="row pt-5">
+      <div class="col text-center">
+        <h2 class="h1">Most popular books</h2>
+        <small class="font-weight-lighter font-italic">a must read list</small>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col pr-5 text-left">
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong>1. Book name <small class="text-muted">(65 checkouts)</small></strong>
+          </div>
+          <div class="col-6">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">75%</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong>1. Book name <small class="text-muted">(65 checkouts)</small></strong>
+          </div>
+          <div class="col-6">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">75%</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong>1. Book name <small class="text-muted">(65 checkouts)</small></strong>
+          </div>
+          <div class="col-6">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">75%</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong>1. Book name <small class="text-muted">(65 checkouts)</small></strong>
+          </div>
+          <div class="col-6">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">75%</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong>1. Book name <small class="text-muted">(65 checkouts)</small></strong>
+          </div>
+          <div class="col-6">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">75%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block js %}
+  <script type="text/javascript">
+      let instance = new TypeIt(".typewriter1", {
+          speed: 40,
+          waitUntilVisible: true,
+          cursor: false,
+          afterComplete: function () {
+              instance.destroy();
+              new TypeIt(".typewriter2", {
+                  speed: 40,
+                  waitUntilVisible: true,
+                  cursor: false
+              })
+                  .type("Open Source ")
+                  .pause(100)
+                  .type('Library')
+                  .go();
+          }
+      })
+          .type('<small>Hi, </small>')
+          .pause(500)
+          .type('Welcome to')
+          .pause(500)
+          .go();
+
+      $(window).scroll(function() {
+          if($(this).scrollTop() > 100) {
+              $('.navbar-fixed-top').addClass('opaque');
+          } else {
+              $('.navbar-fixed-top').removeClass('opaque');
+          }
+      });
+  </script>
 {% endblock %}
