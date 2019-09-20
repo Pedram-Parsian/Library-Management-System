@@ -15,6 +15,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'widget_tweaks',
+    'captcha',
+    'bootstrap_modal_forms',
 ]
 
 MIDDLEWARE = [
@@ -32,8 +36,7 @@ ROOT_URLCONF = 'lms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,9 +73,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# AUTH_USER_MODEL = 'users.User'
+
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
@@ -81,3 +86,34 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'assets')
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+LOGIN_REDIRECT_URL = 'home'
+
+LOGIN_URL = 'login'
+
+LOGOUT_URL = 'logout'
+
+CHARFIELD_MAX_LENGTH = 100
+
+SLUGFIELD_MAX_LENGTH = 100
+
+TEXTFIELD_MAX_LENGTH = 500
+
+DEFAULT_ACTIVATION_DATE = 7
+
+# Google reCAPTCHA:
+RECAPTCHA_PUBLIC_KEY = '_RECAPTCHA_PUBLIC_KEY'
+
+RECAPTCHA_PRIVATE_KEY = '_RECAPTCHA_PRIVATE_KEY'
+
+RECAPTCHA_DOMAIN = 'www.recaptcha.net'
