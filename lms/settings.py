@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'bootstrap_modal_forms',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
+    'document.apps.DocumentConfig',
 ]
 
 MIDDLEWARE = [
