@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Pedram Parsian - Signup{% endblock %}
+{% block title %}Library - Signup{% endblock %}
 {% block content %}
 <div class="container my-5">
   <div class="row">
-    <div class="col-6 mx-auto">
+    <div class="col-5 mx-auto">
       <div class="card mb-3">
-        <div class="card-header text-center">
+        <div class="card-header text-center font-weight-bold">
           Sign up
         </div>
         <div class="card-body">
@@ -69,29 +69,10 @@
               </div>
               {% endif %}
             </div>
-            <div class="form-group">
-              <label>Confirm humanity</label>
-              {{form.captcha}}
-              {% if form.captcha.errors %}
-              <div class="invalid-feedback">
-                {{ form.captcha.errors }}
-              </div>
-              {% endif %}
-            </div>
             <div class="text-center text-md-right mb-2 mt-4">
               <input type="submit" class="btn btn-outline-success font-weight-bold" value="Signup">
             </div>
           </form>
-          <h6 class="text-center text-muted font-weight-bold mb-4">—— OR ——</h6>
-          <div class="text-center">
-            <a title="GitHub" class="btn btn-secondary px-5 mb-2"
-               style="color: #212529; background-color: #ddd; border-color: #d7d7d7;"
-               href="{% url 'social:begin' 'github' %}">Connect With <i class="fab mx-1 fa-github"
-                                                                        aria-hidden="true"></i><strong>GitHub</strong></a>
-            <br>
-            <a href="{% url 'social:begin' 'google-oauth2' %}"><img
-              src="{% static 'img/btn_google_signin_dark_pressed_web.png' %}" alt="Google Signin Button"></a>
-          </div>
         </div>
       </div>
     </div>
