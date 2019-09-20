@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Pedram Parsian - Signup{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-6 mx-auto">
+      <div class="card mb-3">
+        <div class="card-header text-center">
+          Sign up
+        </div>
+        <div class="card-body">
+          <form action="{% url 'signup' %}" method="POST"> {% csrf_token %}
+            {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+              <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}<div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                     name="email" value="{{form.email.value|default:''}}" required>
+              {% if form.email.errors %}
+              <div class="invalid-feedback">
+                {{ form.email.errors }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="first_name">First name</label>
+              <input id="first_name" type="text"
+                     class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" name="first_name"
+                     value="{{form.first_name.value|default:''}}" required>
+              {% if form.first_name.errors %}
+              <div class="invalid-feedback">
+                {{ form.first_name.errors }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="last_name">Last name</label>
+              <input id="last_name" type="text"
+                     class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" name="last_name"
+                     value="{{form.last_name.value|default:''}}" required>
+              {% if form.last_name.errors %}
+              <div class="invalid-feedback">
+                {{ form.last_name.errors }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="password1">Password</label>
+              <input id="password1" type="password"
+                     class="form-control {% if form.password1.errors %}is-invalid{% endif %}" name="password1"
+                     value="{{form.password1.value|default:''}}" required>
+              {% if form.password1.errors %}
+              <div class="invalid-feedback">
+                {{ form.password1.errors }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="password2">Confirm Password</label>
+              <input id="password2" type="password"
+                     class="form-control {% if form.password2.errors %}is-invalid{% endif %}" name="password2"
+                     value="{{form.password2.value|default:''}}" required>
+              {% if form.password2.errors %}
+              <div class="invalid-feedback">
+                {{ form.password2.errors }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label>Confirm humanity</label>
+              {{form.captcha}}
+              {% if form.captcha.errors %}
+              <div class="invalid-feedback">
+                {{ form.captcha.errors }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="text-center text-md-right mb-2 mt-4">
+              <input type="submit" class="btn btn-outline-success font-weight-bold" value="Signup">
+            </div>
+          </form>
+          <h6 class="text-center text-muted font-weight-bold mb-4">—— OR ——</h6>
+          <div class="text-center">
+            <a title="GitHub" class="btn btn-secondary px-5 mb-2"
+               style="color: #212529; background-color: #ddd; border-color: #d7d7d7;"
+               href="{% url 'social:begin' 'github' %}">Connect With <i class="fab mx-1 fa-github"
+                                                                        aria-hidden="true"></i><strong>GitHub</strong></a>
+            <br>
+            <a href="{% url 'social:begin' 'google-oauth2' %}"><img
+              src="{% static 'img/btn_google_signin_dark_pressed_web.png' %}" alt="Google Signin Button"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  {% endblock %}

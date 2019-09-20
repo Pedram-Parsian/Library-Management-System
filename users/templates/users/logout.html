@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Pedram Parsian - Signed out{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 text-center">
+        <div class="py-5">
+            <h1 class="mt-5 font-weight-bold">You have signed out from your account</h1>
+            <h4 class="text-muted mb-5">Thanks for spending some quality time with my web site today!</h4>
+            <p class="mx-auto text-center mb-5">
+                <a href="{% url 'signin' %}" class="btn btn-lg btn-outline-dark">Signin again?</a>
+                <a href="{% url 'home' %}" class="btn btn-lg btn-outline-secondary">Home Page</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

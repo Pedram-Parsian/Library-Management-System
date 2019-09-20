@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Pedram Parsian - Confirm Email{% endblock %}
+{% block content %}
+<main>
+  <div class="container">
+    <div class="text-center my-5">
+      <h1 class="text-center title my-5 font-weight-bold">
+        <small class="h6 text-success">Thanks, just one more step</small>
+        <br>
+        Confirm Your email
+      </h1>
+      <p class="mx-auto mb-5">
+      Check your inbox and confirm your email. If you didn't find my email, also check out the spam folder.
+      </p>
+      <hr>
+      <p class="text-danger font-weight-bold">Click the following button for resend the confirmation email:</p>
+      <a id="resend_activation_email" href="{% url 'resend_activation_email' %}" class="btn btn-danger disabled">Resend Activation Email (60)</a>      
+    </div>
+  </div>
+</main>
+{% endblock %}
+{% block js %}
+<script>
+
+var $resend_button = $("#resend_activation_email");
+var counter = 60;
+var interval = setInterval(function() {
+    counter--;
+    $resend_button.text('Resend Activation Email (' + counter + ')');
+    if (counter == 0) {
+        $resend_button.removeClass("disabled");
+        $resend_button.text('Resend Activation Email');
+        clearInterval(interval);
+    }
+}, 1000);
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+Hello,
+
+Please confirm your account for {{ email }} by clicking the link below:
+
+{{ path }}
+
+Feel free to skip this if you don't attempt for registering on my website.
+
+Thank you,
+Pedram Parsian
