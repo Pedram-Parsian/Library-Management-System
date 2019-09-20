@@ -1,0 +1,65 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark{% if navbar == 'home' %} fixed-top navbar-fixed-top{% endif %}">
+  <div class="container">
+    <a class="navbar-brand font-weight-bold" href="{% url 'home' %}">
+      <img src="{% static 'img/logo.png' %}" class="mr-2" width="48" height="48" alt="lms logo">
+      Library Management System
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarcollapse"
+            aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarcollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item {% if navbar == 'books' %}active{% endif %}">
+          <a class="nav-link" href="">Books {% if navbar == 'books' %}<span
+            class="sr-only">(current)</span>{% endif %}</a>
+        </li>
+        <li class="nav-item {% if navbar == 'checkout' %}active{% endif %}">
+          <a class="nav-link" href="">Checkout {% if navbar == 'checkout' %}<span
+            class="sr-only">(current)</span>{% endif %}</a>
+        </li>
+        <li class="nav-item {% if navbar == 'blog' %}active{% endif %}">
+          <a class="nav-link" href="">Blog {% if navbar == 'blog' %}<span
+            class="sr-only">(current)</span>{% endif %}</a>
+        </li>
+        <li class="nav-item {% if navbar == 'about' %}active{% endif %}">
+          <a class="nav-link" href="">About {% if navbar == 'about' %}<span
+            class="sr-only">(current)</span>{% endif %}</a>
+        </li>
+        <li class="nav-item {% if navbar == 'contact' %}active{% endif %}">
+          <a class="nav-link" href="">Contact {% if navbar == 'contact' %}<span
+            class="sr-only">(current)</span>{% endif %}</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item dropdown text-center">
+            <a class="btn text-light p-0" href="#" id="navbarDropdownMore" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false" style="box-shadow: none;">
+              <div class="media">
+                <img class="align-self-center img-fluid rounded rounded-circle mr-1" style="width: 35px; height: 35px;" src="{{request.user.get_avatar}}" alt="">
+                <span id="NO_badge_cont" class="NO_visible"><span id="NO_badge" class="NO_hidden"></span></span>
+                <p class="align-self-center p-0 m-0 dropdown-toggle"></p>
+              </div>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMore">
+              {% if request.user.is_superuser %}
+                <a class="dropdown-item" href="{% url 'admin' %}">Admin Panel</a>
+              {% endif %}
+              <a class="dropdown-item" href="">Profile</a>
+              <a class="dropdown-item" href="">Logout</a>
+            </div>
+          </li>
+        {% else %}
+          <li class="nav-item mr-auto">
+            <a class="nav-link btn btn-outline-info" href="">Join</a>
+          </li>
+          <li class="nav-item mr-auto">
+            <a class="nav-link text-muted" href="">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
