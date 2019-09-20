@@ -1,8 +1,8 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark{% if navbar == 'home' %} fixed-top navbar-fixed-top{% endif %}">
+<nav class="navbar navbar-expand-lg navbar-light bg-light {% if navbar == 'home' %} fixed-top navbar-fixed-top{% endif %}">
   <div class="container">
     <a class="navbar-brand font-weight-bold" href="{% url 'home' %}">
-      <img src="{% static 'img/logo.png' %}" class="mr-2" width="48" height="48" alt="lms logo">
+      <img src="{% static 'img/logo.png' %}" class="mr-2" width="32" height="32" alt="lms logo">
       Library Management System
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarcollapse"
@@ -24,11 +24,11 @@
             class="sr-only">(current)</span>{% endif %}</a>
         </li>
         <li class="nav-item {% if navbar == 'about' %}active{% endif %}">
-          <a class="nav-link" href="">About {% if navbar == 'about' %}<span
+          <a class="nav-link" href="{% url 'about' %}">About {% if navbar == 'about' %}<span
             class="sr-only">(current)</span>{% endif %}</a>
         </li>
         <li class="nav-item {% if navbar == 'contact' %}active{% endif %}">
-          <a class="nav-link" href="">Contact {% if navbar == 'contact' %}<span
+          <a class="nav-link" href="{% url 'contact' %}">Contact {% if navbar == 'contact' %}<span
             class="sr-only">(current)</span>{% endif %}</a>
         </li>
       </ul>
@@ -53,10 +53,10 @@
           </li>
         {% else %}
           <li class="nav-item mr-auto">
-            <a class="nav-link btn btn-outline-info" href="">Join</a>
+            <a class="nav-link btn btn-outline-warning" href="{% url 'signup' %}">Join</a>
           </li>
           <li class="nav-item mr-auto">
-            <a class="nav-link text-muted" href="">Login</a>
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
           </li>
         {% endif %}
       </ul>
