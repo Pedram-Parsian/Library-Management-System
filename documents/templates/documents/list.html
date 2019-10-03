@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Document List{% endblock %}
+{% block content %}
+  <div class="container">
+  <div class="my-4">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Status</th>
+        <th scope="col">Location</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for item in object_list %}
+        <tr>
+          <th scope="row">{{ item.id }}</th>
+          <td>{{ item.title }}</td>
+          <td>{{ item.get_status }}</td>
+          <td>{{ item.location }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">No books!</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+{% endblock %}
