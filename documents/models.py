@@ -27,6 +27,7 @@ class Document(models.Model):
     authors = models.ManyToManyField('Author', blank=True)
     translators = models.ManyToManyField('Translator', blank=True)
     editors = models.ManyToManyField('Editor', blank=True)
+    number_of_pages = models.IntegerField(blank=True, null=True)
 
     def is_available(self):
         # see if book is available for reserve or checkout
@@ -72,7 +73,7 @@ class Location(models.Model):
 
     def __str__(self):
         # todo generate a call number based on the data
-        pass
+        return f'{self.building} --> {self.floor}'
 
 
 class Building(models.Model):
