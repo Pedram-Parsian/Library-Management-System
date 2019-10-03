@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from django.views.generic import ListView
 
-# Create your views here.
+from . import models
+
+
+class DocumentListView(ListView):
+    template_name = 'documents/list.html'
+    model = models.Document
