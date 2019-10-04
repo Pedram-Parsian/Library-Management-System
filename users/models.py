@@ -59,9 +59,8 @@ class User(AbstractUser):
         return self._get_gravatar_url()
 
     def _get_gravatar_url(self):
-        encoded_email_address = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
-        gravatar_size = urllib.parse.urlencode({'d': 'identicon', 's': '35'})
-        return f'https://www.gravatar.com/avatar/{encoded_email_address}?{gravatar_size}'
+        from lms.utilities import get_gravatar_url
+        return get_gravatar_url(self.email)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.email})'
