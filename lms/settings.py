@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'documents.apps.DocumentsConfig',
+    'circulation.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
