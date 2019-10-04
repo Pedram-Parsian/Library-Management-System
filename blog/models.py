@@ -2,7 +2,7 @@ from datetime import timedelta
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-from pedramparsian.utilities import get_gravatar_url, convert_range
+from lms.utilities import convert_range
 from users.models import User
 from core.models import BaseComment
 
@@ -34,7 +34,8 @@ class Post(models.Model):
 
     def is_new(self):
         if self.date_published:
-            return timezone.now() - timedelta(days=settings.DEFAULT_POST_NEW_DAYS) <= self.date_published <= timezone.now()
+            return timezone.now() - \
+                   timedelta(days=settings.DEFAULT_POST_NEW_DAYS) <= self.date_published <= timezone.now()
         else:
             return False
 
@@ -44,6 +45,7 @@ class Post(models.Model):
     def get_comments_count(self):
         return PostComment.objects.filter(status=PostComment.APPROVED).filter(post=self).count()
 
+    @staticmethod
     def get_archives():
         archive = []
         for date in Post.objects.filter(status='published').values_list('date_published', flat=True):
@@ -55,8 +57,9 @@ class Post(models.Model):
         comments_count = self.get_comments_count()
         likes_count = self.get_likes_count()
         views_count = 5
-        return (likes_count * 3) + (comments_count * 2) + (views_count)
+        return (likes_count * 3) + (comments_count * 2) + views_count
 
+    @staticmethod
     def get_popular_posts():
         return sorted(Post.objects.filter(status='published'), key=lambda t: t.get_post_score(), reverse=True)[:5]
 
