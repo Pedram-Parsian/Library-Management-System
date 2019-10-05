@@ -39,3 +39,12 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.media {
+    display: flex;
+    align-items: flex-start
+}
+
+.media-body {
+    flex: 1
+}
