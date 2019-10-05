@@ -138,4 +138,4 @@ def LikePostView(request, post_id):
         messages.success(request, 'Thanks for your feedback!')
         return HttpResponseRedirect(reverse('blog:post', kwargs={'slug': post.slug}))
     else:
-        return HttpResponseRedirect(f'{reverse("users:signin")}?next={reverse("like_post", kwargs={"post_id": post_id})}')
+        return HttpResponseRedirect(f'{reverse("users:login")}?next={reverse("like_post", kwargs={"post_id": post_id})}')
