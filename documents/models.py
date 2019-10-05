@@ -52,8 +52,16 @@ class Document(models.Model):
         # see if book is available for reserve or checkout
         pass
 
+    def get_document_count(self):
+        """
+        find the number of the same book in the library
+        :return:
+        """
+        return 0
+
     def get_status(self):
         # find out whether the book is in the library or not
+        # maybe another copy of this book is available
         return 'In the library'
 
     def __str__(self):
