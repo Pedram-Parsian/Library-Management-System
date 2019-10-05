@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from core.models import BaseComment
 
 
 class BasePerson(models.Model):
@@ -12,12 +13,19 @@ class BasePerson(models.Model):
         abstract = True
 
 
-class Comment(models.Model):
-    pass
+class Comment(BaseComment):
+    document = models.ForeignKey('Document', on_delete=models.CASCADE)
+
+    def __str__(self):
+        name, family = self.get_info()
+        if self.parent:
+            return f'"{name} {family}" on "{self.document.title}" (child comment)'
+        return f'"{name} {family}" on post "{self.document.title}"'
 
 
 class Document(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+    slug = models.SlugField(max_length=settings.SLUGFIELD_MAX_LENGTH, blank=True, unique=True)
     DDC = models.CharField(max_length=10, blank=True, null=True)
     LCC = models.CharField(max_length=10, blank=True, null=True)
     NBN = models.CharField(max_length=10, blank=True, null=True)
@@ -57,6 +65,7 @@ class Translator(BasePerson):
 
 class Editor(BasePerson):
     ...
+
 
 class DocumentType(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
