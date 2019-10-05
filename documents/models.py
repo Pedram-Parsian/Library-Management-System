@@ -2,6 +2,16 @@ from django.db import models
 from django.conf import settings
 
 
+class BasePerson(models.Model):
+    name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        abstract = True
+
+
 class Comment(models.Model):
     pass
 
@@ -37,26 +47,16 @@ class Document(models.Model):
         return self.title
 
 
-class Author(models.Model):
-    name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
-
-    def __str__(self):
-        return self.name
+class Author(BasePerson):
+    ...
 
 
-class Translator(models.Model):
-    name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
-
-    def __str__(self):
-        return self.name
+class Translator(BasePerson):
+    ...
 
 
-class Editor(models.Model):
-    name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
-
-    def __str__(self):
-        return self.name
-
+class Editor(BasePerson):
+    ...
 
 class DocumentType(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
