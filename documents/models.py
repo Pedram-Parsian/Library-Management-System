@@ -46,10 +46,15 @@ class Document(models.Model):
     translators = models.ManyToManyField('Translator', blank=True)
     editors = models.ManyToManyField('Editor', blank=True)
     number_of_pages = models.IntegerField(blank=True, null=True)
+    description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
 
     def is_available(self):
         # see if book is available for reserve or checkout
         pass
+
+    def get_status(self):
+        # find out whether the book is in the library or not
+        return 'In the library'
 
     def __str__(self):
         return self.title
