@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Document Detail{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row mt-5 pt-3">
+      <div class="col-12 mt-1 mx-lg-4">
+        <div class="pb-3 text-center text-lg-left">
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body mx-4">
+                  <div class="row">
+                    <div class="col">
+                      <h1 class="font-weight-bold">{{ object.title }}</h1>
+                      <!-- change color of status line based on status -->
+                      <p class="h6">Status: {{ object.get_status }}</p>
+                      <a href="" class="btn btn-rounded btn-primary btn-lg float-right">Reserve</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-1 mx-lg-4">
+        <div class="pb-3 text-center text-lg-left">
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body mx-4">
+                  <h3 class="font-weight-bold">Details</h3>
+                  <table class="table">
+                    <tbody>
+                    {% if object.title %}
+                      <tr>
+                        <th>Title</th>
+                        <td>{{ object.title }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.document_type %}
+                      <tr>
+                        <th>Type</th>
+                        <td>{{ object.document_type }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.DDC %}
+                      <tr>
+                        <th>DDC</th>
+                        <td>{{ object.DDC }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.LCC %}
+                      <tr>
+                        <th>LCC</th>
+                        <td>{{ object.LCC }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.NBN %}
+                      <tr>
+                        <th>NBN</th>
+                        <td>{{ object.NBN }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.ISBN %}
+                      <tr>
+                        <th>ISBN</th>
+                        <td>{{ object.ISBN }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.Price %}
+                      <tr>
+                        <th>Price</th>
+                        <td>{{ object.Price }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.Edition %}
+                      <tr>
+                        <th>Edition</th>
+                        <td>{{ object.Edition }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.Copies %}
+                      <tr>
+                        <th>Copies</th>
+                        <td>{{ object.Copies }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.publications.all %}
+                      <tr>
+                        <!-- todo add link to each pub to show all the books of that -->
+                        <th>Publications</th>
+                        <td>{{ object.publications.all|join:', ' }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.age_classification %}
+                      <tr>
+                        <!-- todo add link to it to show the details -->
+                        <th>Age Classification</th>
+                        <td>{{ object.age_classification }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.location %}
+                      <tr>
+                        <!-- todo add link to it to show the details -->
+                        <th>Location</th>
+                        <td>{{ object.location }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.authors.all %}
+                      <tr>
+                        <!-- todo add link to each one to show the details and their books -->
+                        <th>Authors</th>
+                        <td>{{ object.authors.all|join:', ' }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.translators.all %}
+                      <tr>
+                        <!-- todo add link to each one to show the details and their books -->
+                        <th>Translators</th>
+                        <td>{{ object.translators.all|join:', ' }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.editors.all %}
+                      <tr>
+                        <!-- todo add link to each one to show the details and their books -->
+                        <th>Editors</th>
+                        <td>{{ object.editors.all|join:', ' }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.number_of_pages %}
+                      <tr>
+                        <th>Number of pages</th>
+                        <td>{{ object.number_of_pages }}</td>
+                      </tr>
+                    {% endif %}
+                    {% if object.description %}
+                      <tr>
+                        <th>Description</th>
+                        <td>{{ object.description }}</td>
+                      </tr>
+                    {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if comments|length != 0 %}
+        <div class="col-12 mt-1 mx-lg-4">
+          <div class="pb-3 text-center text-lg-left">
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body mx-4">
+                    <div class="text-center text-md-left">
+                      <div class="text-center mt-2 mb-4">
+                        <h3 class="font-weight-bold">Comments
+                          <span class="badge badge-secondary">{{comments|length}}</span>
+                        </h3>
+                      </div>
+                      {% for comment in comments %}
+                        <div class="row mb-5">
+                          <div class="col-sm-2 col-12 mb-3">
+                            <img src="{{comment.get_avatar}}" alt="{{comment.get_info.0}} Avatar">
+                          </div>
+                          <div class="col-sm-10 col-12">
+                            <h5 class="font-weight-bold mb-0">{{comment.get_info.0|capfirst}}{% if comment.get_info.1 %}
+                              {{ comment.get_info.1|capfirst }}{% endif %}
+                              <fieldset class="starability-result" data-rating="{{ comment.vote }}">
+                                Rated: {{ comment.vote }} stars
+                              </fieldset></h5>
+                            <div class="card-data">
+                              <small class="text-muted mt-0">{{comment.date_added|date:'Y/m/d'}}</small>
+                            </div>
+                            <p>{{comment.text}}</p>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      <div class="col-12 mt-1 mx-lg-4">
+        <div class="extra-margins pb-3 text-center text-lg-left">
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body mx-4">
+                  <h3 class="text-center pt-5 font-weight-bold">Leave a comment</h3>
+                  <form method="POST"> {% csrf_token %}
+                    {% if request.user.is_authenticated %}
+                      <p class="text-center">Logged in as <a href="">{{request.user.first_name}}</a>.
+                        <a href="">Logout?</a></p>
+                    {% else %}
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="name">Your name</label>
+                          <input id="name" type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                                 name="name" value="{{form.name.value|default:""}}">
+                          {% if form.name.errors %}
+                            <div class="invalid-feedback">
+                              {{ form.name.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="email">Your email</label>
+                          <input id="email" type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                 name="email" value="{{form.email.value|default:""}}">
+                          {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                              {{ form.email.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endif %}
+                    <div class="form-group">
+                      <label for="vote">Your vote</label>
+                      <!-- todo post comment vote not working!                     -->
+                      <fieldset class="starability-growRotate">
+                        <input type="radio" id="no-rate-growRotate" class="input-no-rate" name="rating" value="0" checked="" aria-label="No rating.">
+                        <input type="radio" id="growRotate-rate1" name="rating" value="1">
+                        <label for="growRotate-rate1" title="Terrible">1 star</label>
+                        <input type="radio" id="growRotate-rate2" name="rating" value="2">
+                        <label for="growRotate-rate2" title="Not good">2 stars</label>
+                        <input type="radio" id="growRotate-rate3" name="rating" value="3">
+                        <label for="growRotate-rate3" title="Average">3 stars</label>
+                        <input type="radio" id="growRotate-rate4" name="rating" value="4">
+                        <label for="growRotate-rate4" title="Very good">4 stars</label>
+                        <input type="radio" id="growRotate-rate5" name="rating" value="5">
+                        <label for="growRotate-rate5" title="Amazing">5 stars</label>
+                        <span class="starability-focus-ring"></span>
+                      </fieldset>
+                      <!--                      <input min="1" max="5" type="number" name="vote" id="vote"-->
+                      <!--                             class="form-control {% if form.vote.errors %}is-invalid{% endif %}">{{form.text.value|default:""}}</input>-->
+                      {% if form.vote.errors %}
+                        <div class="invalid-feedback">
+                          {{ form.vote.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group">
+                      <label for="message">Your comment</label>
+                      <textarea rows='3' name="text" id="text"
+                                class="form-control {% if form.text.errors %}is-invalid{% endif %}"
+                                rows="3">{{form.text.value|default:""}}</textarea>
+                      {% if form.text.errors %}
+                        <div class="invalid-feedback">
+                          {{ form.text.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="text-center mt-4">
+                      <input type="submit" class="btn btn-block btn-outline-primary">
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
