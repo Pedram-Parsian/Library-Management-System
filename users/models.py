@@ -65,6 +65,9 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.email})'
 
+    def get_info(self):
+        return f'{self.first_name} {self.last_name}'
+
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
