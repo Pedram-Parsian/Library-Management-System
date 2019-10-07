@@ -10,7 +10,7 @@
           Sign up
         </div>
         <div class="card-body">
-          <form action="{% url 'signup' %}" method="POST"> {% csrf_token %}
+          <form action="{% url 'users:signup' %}" method="POST"> {% csrf_token %}
             {% for error in form.non_field_errors %}
             <div class="alert alert-danger">
               <strong>{{ error|escape }}</strong>
