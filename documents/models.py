@@ -25,6 +25,8 @@ class Comment(BaseComment):
 
 class Document(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+    # I use document_type instead of 'type' because type is a python keyword!
+    document_type = models.ForeignKey('DocumentType', on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(max_length=settings.SLUGFIELD_MAX_LENGTH, blank=True, unique=True)
     DDC = models.CharField(max_length=10, blank=True, null=True)
     LCC = models.CharField(max_length=10, blank=True, null=True)
@@ -36,8 +38,6 @@ class Document(models.Model):
     price = models.IntegerField(blank=True, null=True)
     edition = models.PositiveSmallIntegerField(blank=True, null=True)
     copies = models.PositiveIntegerField(blank=True, null=True)
-    # I use document_type instead of 'type' because type is a python keyword!
-    document_type = models.ForeignKey('DocumentType', on_delete=models.CASCADE, blank=True, null=True)
     language = models.ForeignKey('Language', on_delete=models.CASCADE, blank=True, null=True)
     publications = models.ManyToManyField('Publication', blank=True)
     age_classification = models.ForeignKey('AgeClassification', on_delete=models.CASCADE, blank=True, null=True)
