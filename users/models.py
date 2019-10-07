@@ -44,10 +44,16 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     # todo user should be notified if there is any new notification!
+    USER_TYPE = (
+        (10, 'Admin'),
+        (20, 'Librarian'),
+        (30, 'Member'),
+    )
     username = None
     email = models.EmailField('email address', unique=True)
     email_activated = models.BooleanField('user\'s email confirmation', default=False)
     avatar = models.ImageField(upload_to='user-avatars/', blank=True, null=True)
+    role = models.IntegerField(choices=USER_TYPE)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
@@ -63,7 +69,7 @@ class User(AbstractUser):
         return get_gravatar_url(self.email)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} ({self.email})'
+        return f'{self.first_name} {self.last_name} ({self.email}) - {self.get_role_display()}'
 
     def get_info(self):
         return f'{self.first_name} {self.last_name}'
