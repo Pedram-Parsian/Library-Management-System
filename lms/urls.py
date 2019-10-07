@@ -10,6 +10,7 @@ urlpatterns = [
     path('accounts/', include('users.passwords.urls')),
     path('documents/', include('documents.urls')),
     path('blog/', include('blog.urls')),
+    path('', include('circulation.urls')),
 ]
 
 if settings.DEBUG:
