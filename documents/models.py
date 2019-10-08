@@ -14,33 +14,34 @@ class BasePerson(models.Model):
 
 
 class Comment(BaseComment):
-    document = models.ForeignKey('Document', on_delete=models.CASCADE)
+    document = models.ForeignKey('Document', on_delete=models.PROTECT)
 
     def __str__(self):
         name, family = self.get_info()
         if self.parent:
             return f'"{name} {family}" on "{self.document.title}" (child comment)'
-        return f'"{name} {family}" on post "{self.document.title}"'
+        return f'"{name} {family}" on document "{self.document.title}"'
 
 
 class Document(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     # I use document_type instead of 'type' because type is a python keyword!
-    document_type = models.ForeignKey('DocumentType', on_delete=models.CASCADE, blank=True, null=True)
+    document_type = models.ForeignKey('DocumentType', on_delete=models.PROTECT, blank=True, null=True)
     slug = models.SlugField(max_length=settings.SLUGFIELD_MAX_LENGTH, blank=True, unique=True)
+    # todo check the length of DDC, LCC, NBN, ISBN
     DDC = models.CharField(max_length=10, blank=True, null=True)
     LCC = models.CharField(max_length=10, blank=True, null=True)
     NBN = models.CharField(max_length=10, blank=True, null=True)
-    ISBN = models.CharField(max_length=10, blank=True, null=True)
+    ISBN = models.CharField(max_length=13, blank=True, null=True)
     active = models.BooleanField(default=True)
     checkoutable = models.BooleanField(default=True)
     reservable = models.BooleanField(default=True)
     price = models.IntegerField(blank=True, null=True)
     edition = models.PositiveSmallIntegerField(blank=True, null=True)
     copies = models.PositiveIntegerField(blank=True, null=True)
-    language = models.ForeignKey('Language', on_delete=models.CASCADE, blank=True, null=True)
+    language = models.ForeignKey('Language', on_delete=models.PROTECT, blank=True, null=True)
     publications = models.ManyToManyField('Publication', blank=True)
-    age_classification = models.ForeignKey('AgeClassification', on_delete=models.CASCADE, blank=True, null=True)
+    age_classification = models.ForeignKey('AgeClassification', on_delete=models.PROTECT, blank=True, null=True)
     location = models.ForeignKey('Row', on_delete=models.PROTECT)
     call_no = models.CharField(max_length=20, blank=True, null=True)
     authors = models.ManyToManyField('Author', blank=True)
@@ -53,22 +54,44 @@ class Document(models.Model):
     # todo generate slug
 
     def is_available(self):
-        # see if book is available for reserve or checkout
-        pass
+        """
+        checks if the book is available for checkout
+        """
+        # todo complete this method
+        ...
 
     def get_document_count(self):
         """
-        find the number of the same book in the library
-        :return:
+        find the number of the same document in the library
         """
-        return 0
+        ...
 
     def get_status(self):
-        # find out whether the book is in the library or not
-        # maybe another copy of this book is available
-        return 'In the library'
+        """
+        find out whether the book is in the library or not
+        maybe another copy of this book is available
+        """
+        ...
 
     def __str__(self):
+        return f'{self.title} ({self.call_no})'
+
+
+class DocumentType(models.Model):
+    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+    is_digital = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.title} ({"digital" if self.is_digital else "physical"})'
+
+
+class Language(models.Model):
+    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+    native_name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH, blank=True, null=True)
+
+    def __str__(self):
+        if self.native_name:
+            return f'{self.title} ({self.native_name})'
         return self.title
 
 
@@ -82,14 +105,6 @@ class Translator(BasePerson):
 
 class Editor(BasePerson):
     ...
-
-
-class DocumentType(models.Model):
-    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
-    is_digital = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f'{self.title} ({"digital" if self.is_digital else "physical"})'
 
 
 class Building(models.Model):
@@ -129,16 +144,6 @@ class Row(models.Model):
 
     def __str__(self):
         return f'Row {self.title}'
-
-
-class Language(models.Model):
-    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
-    native_name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH, blank=True, null=True)
-
-    def __str__(self):
-        if self.native_name:
-            return f'{self.title} ({self.native_name})'
-        return self.title
 
 
 class Publication(models.Model):
