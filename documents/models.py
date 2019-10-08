@@ -41,12 +41,16 @@ class Document(models.Model):
     language = models.ForeignKey('Language', on_delete=models.CASCADE, blank=True, null=True)
     publications = models.ManyToManyField('Publication', blank=True)
     age_classification = models.ForeignKey('AgeClassification', on_delete=models.CASCADE, blank=True, null=True)
-    location = models.ForeignKey('Location', on_delete=models.CASCADE)
+    location = models.ForeignKey('Row', on_delete=models.PROTECT)
+    call_no = models.CharField(max_length=20, blank=True, null=True)
     authors = models.ManyToManyField('Author', blank=True)
     translators = models.ManyToManyField('Translator', blank=True)
     editors = models.ManyToManyField('Editor', blank=True)
     number_of_pages = models.IntegerField(blank=True, null=True)
     description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
+
+    # todo generate call_no based on row (location) + id + hash + ...
+    # todo generate slug
 
     def is_available(self):
         # see if book is available for reserve or checkout
@@ -88,29 +92,43 @@ class DocumentType(models.Model):
         return f'{self.title} ({"digital" if self.is_digital else "physical"})'
 
 
-class Location(models.Model):
-    building = models.ForeignKey('Building', on_delete=models.CASCADE)
-    floor = models.ForeignKey('Floor', on_delete=models.CASCADE)
-    # section = models.ForeignKey('Section', on_delete=models.CASCADE)
-
-    def __str__(self):
-        # todo generate a call number based on the data
-        return f'{self.building} --> {self.floor}'
-
-
 class Building(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
 
     def __str__(self):
-        return self.title
+        return f'Building {self.title}'
 
 
 class Floor(models.Model):
-    building = models.ForeignKey('Building', on_delete=models.CASCADE)
+    building = models.ForeignKey(Building, on_delete=models.PROTECT)
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
 
     def __str__(self):
-        return f'{self.title} (in {self.building})'
+        return f'Floor {self.title}'
+
+
+class Repository(models.Model):
+    floor = models.ForeignKey(Floor, on_delete=models.PROTECT)
+    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+
+    def __str__(self):
+        return f'Repository {self.title}'
+
+
+class Rack(models.Model):
+    repository = models.ForeignKey(Repository, on_delete=models.PROTECT)
+    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+
+    def __str__(self):
+        return f'Rack {self.title}'
+
+
+class Row(models.Model):
+    rack = models.ForeignKey(Rack, on_delete=models.PROTECT)
+    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+
+    def __str__(self):
+        return f'Row {self.title}'
 
 
 class Language(models.Model):
@@ -126,7 +144,7 @@ class Language(models.Model):
 class Publication(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     date_of_establishment = models.DateField(blank=True, null=True)
-    refer_to = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
+    refer_to = models.ForeignKey('self', blank=True, null=True, on_delete=models.PROTECT)
 
     def __str__(self):
         if self.refer_to:
