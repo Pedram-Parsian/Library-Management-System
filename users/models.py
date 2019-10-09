@@ -58,6 +58,7 @@ class Membership(models.Model):
     total_concurrent_issues = models.PositiveIntegerField(null=True, blank=True)
     total_reserves = models.PositiveIntegerField(null=True, blank=True)
     total_renews = models.PositiveIntegerField(null=True, blank=True)
+    max_continuous_renews = models.PositiveIntegerField(null=True, blank=True)
     issue_duration = models.DurationField(null=True, blank=True)
     renew_duration = models.DurationField(null=True, blank=True)
     description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
