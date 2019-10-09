@@ -1,9 +1,5 @@
-import hashlib
-import urllib
 from datetime import timedelta
-
 from django.conf import settings
-from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
 from django.db.models import Q
@@ -13,51 +9,27 @@ from django.urls import reverse
 from django.db import models
 
 
-class UserManager(BaseUserManager):
-    use_in_migrations = True
-
-    def _create_user(self, email, password, **extra_fields):
-        if not email:
-            raise ValueError('The given email must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, **extra_fields)
-
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('email_activated', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-        return self._create_user(email, password, **extra_fields)
-
-
 class User(AbstractUser):
     # todo user should be notified if there is any new notification!
-    USER_TYPE = (
-        (10, 'Admin'),
-        (20, 'Librarian'),
-        (30, 'Member'),
+    MALE = 1
+    FEMALE = 2
+    OTHER = 3
+    GENDER_CHOICES = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+        (OTHER, 'Other'),
     )
-    username = None
-    email = models.EmailField('email address', unique=True)
+    date_of_birthday = models.DateField(blank=True, null=True)
+    identification_code = models.CharField(max_length=10, unique=True)
+    gender = models.IntegerField(choices=GENDER_CHOICES)
+    father_name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH, blank=True, null=True)
+    place_of_birthday = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH, blank=True, null=True)
+    is_member = models.BooleanField(default=False)
+    # overriding the default email field, because that's not unique:
+    email = models.EmailField('email address', blank=True, null=True, unique=True)
     email_activated = models.BooleanField('user\'s email confirmation', default=False)
     avatar = models.ImageField(upload_to='user-avatars/', blank=True, null=True)
-    role = models.IntegerField(choices=USER_TYPE)
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-
-    objects = UserManager()
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'identification_code', 'gender', 'email']
 
     def get_avatar(self):
         if self.avatar:
@@ -69,10 +41,30 @@ class User(AbstractUser):
         return get_gravatar_url(self.email)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} ({self.email}) - {self.get_role_display()}'
+        return f'{self.get_full_name()} ({self.username})'
 
-    def get_info(self):
-        return f'{self.first_name} {self.last_name}'
+
+class Member(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    membership = models.ForeignKey('Membership', on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.get_full_name()
+
+
+class Membership(models.Model):
+    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH, blank=True, null=True)
+    total_issues = models.PositiveIntegerField(null=True, blank=True)
+    total_concurrent_issues = models.PositiveIntegerField(null=True, blank=True)
+    total_reserves = models.PositiveIntegerField(null=True, blank=True)
+    total_renews = models.PositiveIntegerField(null=True, blank=True)
+    issue_duration = models.DurationField(null=True, blank=True)
+    renew_duration = models.DurationField(null=True, blank=True)
+    description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
+    fine_amount = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f'Membership {self.title}'
 
 
 class Notification(models.Model):
