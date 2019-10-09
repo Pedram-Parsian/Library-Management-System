@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'documents.apps.DocumentsConfig',
     'circulation.apps.CirculationConfig',
-    'blog.apps.BlogConfig'
+    'blog.apps.BlogConfig',
+    'accounting.apps.AccountingConfig',
 ]
 
 MIDDLEWARE = [
