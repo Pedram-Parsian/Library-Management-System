@@ -12,6 +12,7 @@ django-livereload-server==0.3.2
 django-recaptcha==2.0.5
 django-widget-tweaks==1.4.5
 html5lib==1.0.1
+Khayyam==3.0.17
 Pillow==6.1.0
 pycparser==2.19
 Pyphen==0.9.5
