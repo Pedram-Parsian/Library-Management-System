@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse
 
-from document.models import Comment
+from documents.models import Comment
 from . import forms
 from . import models
 
