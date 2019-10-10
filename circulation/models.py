@@ -63,7 +63,8 @@ class Reserve(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     available_since = models.DateTimeField(blank=True, null=True)
     # after the member has submitted the issue, it will be stored here:
-    issue = models.ForeignKey(Issue, blank=True, null=True)
+    # todo check if CASCADE is the right choice here
+    issue = models.ForeignKey(Issue, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.user} reserve {self.document} @ {self.timestamp}'
