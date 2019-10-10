@@ -12,8 +12,8 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = models.User
-        fields = ("email", "first_name", "last_name", 'captcha')
-        field_classes = {"email": UsernameField}
+        fields = ('email', 'first_name', 'last_name', 'captcha')
+        field_classes = {'email': UsernameField}
 
 
 class LoginForm(forms.Form):
