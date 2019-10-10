@@ -46,10 +46,25 @@ class User(AbstractUser):
 
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    group = models.ForeignKey('Group', on_delete=models.PROTECT, null=True, blank=True)
     membership = models.ForeignKey('Membership', on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
         return self.user.get_full_name()
+
+
+class Group(models.Model):
+    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
+
+    @property
+    def member_count(self):
+        return self.member_set.count()
+
+    def __str__(self):
+        if self.parent:
+            return f'{self.title} ({self.member_count} members) --> {self.parent}'
+        return f'{self.title} ({self.member_count} members)'
 
 
 class Membership(models.Model):
