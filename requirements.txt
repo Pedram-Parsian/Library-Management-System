@@ -8,11 +8,14 @@ defusedxml==0.6.0
 Django==2.2.5
 django-bootstrap-modal-forms==1.4.3
 django-debug-toolbar==2.0
+django-filter==2.2.0
 django-livereload-server==0.3.2
 django-recaptcha==2.0.5
 django-widget-tweaks==1.4.5
+djangorestframework==3.10.3
 html5lib==1.0.1
 Khayyam==3.0.17
+Markdown==3.1.1
 Pillow==6.1.0
 pycparser==2.19
 Pyphen==0.9.5

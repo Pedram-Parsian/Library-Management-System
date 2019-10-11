@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'accounting.apps.AccountingConfig',
     'reports.apps.ReportsConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
