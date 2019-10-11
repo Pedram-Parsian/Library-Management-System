@@ -2,7 +2,7 @@ from django.urls import path, re_path
 
 from . import views
 
-app_name='users'
+app_name = 'users'
 urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('profile/comments', views.ProfileCommentsView.as_view(), name='comments'),
