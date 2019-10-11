@@ -127,7 +127,7 @@ class AccountEmailActivationView(View):
 class ResendActivationEmail(FormView):
     template_name = 'users/email_activation/resend.html'
     form_class = forms.ReactivateEmailForm
-    success_url = reverse_lazy('resend_activation_email_successful')
+    success_url = reverse_lazy('users:resend_activation_email_successful')
 
     def form_valid(self, form):
         email = form.cleaned_data.get('email')
