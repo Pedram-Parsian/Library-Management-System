@@ -1,0 +1,174 @@
+@startuml
+
+package "Circulation" #f0eb95 {
+
+
+    class Issue
+    {
+        member
+        document
+        timestamp
+        due_date
+        returned_date
+        fines
+
+        has_renews()
+        is_returned()
+
+        }
+
+
+    class Fine
+    {
+        reason
+        member
+        amount
+        staff
+        timestamp
+        payment
+        description
+
+        has_payed()
+        __str__()
+
+    }
+
+
+    class Reserve
+    {
+        user
+        document
+        timestamp
+        available_since
+        issue
+
+        __str__()
+
+    }
+
+
+    class Renew {
+        issue
+        timestamp
+        due_date
+
+        __str__()
+
+    }
+
+}
+
+
+package "Document" #9beaf2 {
+
+    Document <|-- DocumentType
+
+    class Document {
+
+        title
+        document_type
+        slug
+        DDC
+        LCC
+        NBN
+        ISBN
+        active
+        checkoutable
+        reservable
+        price
+        edition
+        copies
+        language
+        publications
+        age_classification
+        location
+        call_no
+        authors
+        translators
+        editors
+        number_of_pages
+        description
+
+        is_available()
+        get_document_count()
+        get_status()
+        __str__()
+
+    }
+
+    class DocumentType {
+
+        title
+        is_digital
+
+        __str__()
+
+    }
+
+}
+
+
+
+package "User" #DDDDDD {
+
+
+    User <|-- Member
+    Member <|-- Membership
+
+
+
+    class User {
+
+        username
+        is_staff
+        is_active
+        date_joined
+        password
+        last_login
+        first_name
+        last_name
+        date_of_birthday
+        identification_code
+        gender
+        father_name
+        place_of_birthday
+        is_member
+        email
+        email_activated
+        avatar
+
+        __str__()
+        get_avatar()
+
+    }
+
+    class Member {
+
+        user
+        group
+        membership
+
+        __str__()
+
+    }
+
+    class Membership {
+
+        title
+        total_issues
+        total_concurrent_issues
+        total_reserves
+        total_renews
+        max_continuous_renews
+        issue_duration
+        renew_duration
+        description
+        fine_amount
+
+        __str__()
+
+    }
+
+}
+
+@enduml
