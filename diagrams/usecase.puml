@@ -1,0 +1,98 @@
+@startuml
+
+skinparam packageStyle rectangle
+
+' ======= the actors =========
+
+actor System as SS
+actor Admin as A
+actor Staff as S
+actor Member as M
+
+
+rectangle "Library Management System" #C0C0D1 {
+    left to right direction
+
+' ====== the use cases =========
+
+together {
+    (Forgotten Password Management) as (Forgotten Password Management) #83d3f6
+    (Send Overdue Notification) as (Send Overdue Notification) #83d3f6
+    (Send Reservation Available Notification) as (Send Reservation Available Notification) #83d3f6
+    (Send Reservation Cancelled Notification) as (Send Reservation Cancelled Notification) #83d3f6
+}
+
+together {
+    (Login) as (Login) #7a97ca
+    (Logout) as (Logout) #7a97ca
+    (Reserve Book) as (Reserve Book) #7a97ca
+    (Cancel Reservation) as (Cancel Reservation) #7a97ca
+    (Search Catalog) as (Search Catalog) #7a97ca
+    (View Profile) as (View Profile) #7a97ca
+    (Edit Profile) as (Edit Profile) #7a97ca
+    (Pay Fine) as (Pay Fine) #7a97ca
+    (Cancel Membership) as (Cancel Membership) #7a97ca
+}
+
+
+    (Add/Edit/Remove Book) as (Add/Edit/Remove Book) #ffcb0c
+    (Add/Edit/Remove Member) as (Add/Edit/Remove Member) #ffcb0c
+    (Add/Edit/Remove Publication) as (Add/Edit/Remove Publication) #ffcb0c
+    (Add/Edit/Remove Author) as (Add/Edit/Remove Author) #ffcb0c
+    (Add/Edit/Remove Translator) as (Add/Edit/Remove Translator) #ffcb0c
+    (Add/Edit/Remove Editor) as (Add/Edit/Remove Editor) #ffcb0c
+    (Add/Edit/Remove DocumentType) as (Add/Edit/Remove DocumentType) #ffcb0c
+    (Issue Member Card) as (Issue Member Card) #ffcb0c
+    (Search Member) as (Search Member) #ffcb0c
+    (Fine Member) as (Fine Member) #ffcb0c
+    (Add/Edit/Remove Membership) as (Add/Edit/Remove Membership) #ffcb0c
+    (Issue Book) as (Issue Book) #ffcb0c
+    (Renew Book) as (Renew Book) #ffcb0c
+    (Return Book) as (Return Book) #ffcb0c
+
+
+    (Add Staff) as (Add Staff) #a4e148
+    (Edit Staff) as (Edit Staff) #a4e148
+    (Remove Staff) as (Remove Staff) #a4e148
+
+
+' ====== the use case links =========
+
+    SS -- (Forgotten Password Management)
+    SS -- (Send Overdue Notification)
+    SS -- (Send Reservation Available Notification)
+    SS -- (Send Reservation Cancelled Notification)
+
+    A -- (Add Staff)
+    A -- (Edit Staff)
+    A -- (Remove Staff)
+
+    S -- (Add/Edit/Remove Book)
+    S -- (Add/Edit/Remove Member)
+    S -- (Issue Member Card)
+    S -- (Search Member)
+    S -- (Fine Member)
+    S -- (Add/Edit/Remove Membership)
+    S -- (Add/Edit/Remove Publication)
+    S -- (Add/Edit/Remove Author)
+    S -- (Add/Edit/Remove Translator)
+    S -- (Add/Edit/Remove Editor)
+    S -- (Add/Edit/Remove DocumentType)
+    S -- (Issue Book)
+    S -- (Renew Book)
+    S -- (Return Book)
+
+
+    M -- (Login)
+    M -- (Logout)
+    M -- (Reserve Book)
+    M -- (Cancel Reservation)
+    M -- (Search Catalog)
+    M -- (View Profile)
+    M -- (Edit Profile)
+    M -- (Pay Fine)
+    M -- (Cancel Membership)
+
+}
+
+@enduml
