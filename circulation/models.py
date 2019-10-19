@@ -58,7 +58,7 @@ class Fine(models.Model):
 
 
 class Reserve(models.Model):
-    user = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     available_since = models.DateTimeField(blank=True, null=True)
