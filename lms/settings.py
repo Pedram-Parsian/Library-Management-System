@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'captcha',
     'debug_toolbar',
+    'django-bootstrap-modal-forms',
     'bootstrap_modal_forms',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
