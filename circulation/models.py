@@ -65,6 +65,13 @@ class Reserve(models.Model):
     # after the member has submitted the issue, it will be stored here:
     # todo check if CASCADE is the right choice here
     issue = models.ForeignKey(Issue, blank=True, null=True, on_delete=models.CASCADE)
+    description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
+
+    def issued(self):
+        """
+        Determined whether the book has been issued yet.
+        """
+        return True if self.issue_id else False
 
     def __str__(self):
         return f'{self.user} reserve {self.document} @ {self.timestamp}'
