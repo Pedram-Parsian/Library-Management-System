@@ -74,7 +74,7 @@ class Reserve(models.Model):
         return True if self.issue_id else False
 
     def __str__(self):
-        return f'{self.user} reserve {self.document} @ {self.timestamp}'
+        return f'{self.member} reserve {self.document} @ {self.timestamp}'
 
 
 class Renew(models.Model):
