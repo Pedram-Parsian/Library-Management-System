@@ -12,13 +12,13 @@
           <hr class="title-hr mt-2">
         </div>
         <a class="btn btn-info" href="{% url 'password_change' %}">Change Password</a>
-        <a class="btn btn-warning mt-2" href="{% url 'signout' %}">Sign out</a>
+        <a class="btn btn-warning mt-2" href="{% url 'users:logout' %}">Sign out</a>
       </div>
     </div>
     <div class="card my-5" style="border: none;">
       <div class="card-body p-0">
         <ul class="list-group">
-          <a href="{% url 'profile' %}">
+          <a href="{% url 'users:profile' %}">
             <li class="list-group-item list-group-item-light {% if sidebar == 'PROFILE' %}active{% endif %}">
               <i class="fas fa-laptop mr-5"></i>Profile
             </li>
@@ -33,7 +33,7 @@
                 <i class="fa fa-star mr-5"></i>Favorite List
               </li>
             </a>
-            <a href="{% url 'comments' %}" class="my-1">
+            <a href="{% url 'users:comments' %}" class="my-1">
               <li class="list-group-item list-group-item-light {% if sidebar == 'COMMENTS' %}active{% endif %}">
                 <i class="far fa-comment mr-5"></i>Comments
               </li>
