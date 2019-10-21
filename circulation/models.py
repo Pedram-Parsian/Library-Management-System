@@ -74,6 +74,7 @@ class Reserve(models.Model):
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     available_since = models.DateTimeField(blank=True, null=True)
+    forced_expired = models.BooleanField(default=False)
     # after the member has submitted the issue, it will be stored here:
     # todo check if CASCADE is the right choice here
     issue = models.ForeignKey(Issue, blank=True, null=True, on_delete=models.CASCADE)
