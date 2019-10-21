@@ -24,6 +24,19 @@ class Comment(BaseComment):
 
 
 class Document(models.Model):
+    AVAILABLE = 10  # the document is ready to be checked out. reserving is not possible
+    RESERVED = 20  # document is available in the library, but it's reserved. checkout for others is not allowed.
+    LOANED = 30  # document is out of library, may also be reserved too (edge case)
+    LOST = 40 # document is lost and not available at all, but keep info for refrencing
+    DOCUMENT_STATUS = (
+        (AVAILABLE, 'Available'),
+        (RESERVED, 'Reserved'),
+        (LOANED, 'Loaned'),
+        (LOST, 'Lost'),
+    )
+    # todo write pre-save and post-save signals to change the status of the document automatically in the related models
+    # example: when checking out, reserving, etc.
+    status = models.IntegerField(choices=DOCUMENT_STATUS, default=AVAILABLE)
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     # I use document_type instead of 'type' because type is a python keyword!
     document_type = models.ForeignKey('DocumentType', on_delete=models.PROTECT, blank=True, null=True)
@@ -53,23 +66,9 @@ class Document(models.Model):
     # todo generate call_no based on row (location) + id + hash + ...
     # todo generate slug
 
-    def is_available(self):
-        """
-        checks if the book is available for checkout
-        """
-        # todo complete this method
-        ...
-
     def get_document_count(self):
         """
         find the number of the same document in the library
-        """
-        ...
-
-    def get_status(self):
-        """
-        find out whether the book is in the library or not
-        maybe another copy of this book is available
         """
         ...
 
