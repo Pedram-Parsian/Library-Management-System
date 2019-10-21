@@ -58,6 +58,15 @@ class Fine(models.Model):
 
 
 class Reserve(models.Model):
+    """
+    possible status of a reserve:
+    1. book is not available yet --> waiting...(+ estimated availability date)
+    2. book is available --> available
+    3. book was available and user submit the checkout before the due date --> proceed
+    4. book was available but member didn't get that till the due date --> expired
+    5. the reservation has been forced removed by staff or admin --> not accepted
+    ?. if the member remove the reservation himself/herself, we will actually remove the row at DB
+    """
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
