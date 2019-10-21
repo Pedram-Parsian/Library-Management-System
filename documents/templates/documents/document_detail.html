@@ -13,10 +13,23 @@
                 <div class="card-body mx-4">
                   <div class="row">
                     <div class="col">
+                      <!-- modal for reserve -->
+                      <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end of modal -->
                       <h1 class="font-weight-bold">{{ object.title }}</h1>
                       <!-- change color of status line based on status -->
                       <p class="h6">Status: {{ object.get_status }}</p>
-                      <a href="" class="btn btn-rounded btn-primary btn-lg float-right">Reserve</a>
+                      {% if request.user.is_authenticated %}
+                      <button class="reserve-document btn btn-rounded btn-primary btn-lg float-right" type="button" name="button">Reserve</button>
+                      {% else %}
+                      <a href="{% url 'users:login' %}" class="btn btn-rounded btn-primary btn-lg float-right">Reserve</a>
+                      {% endif %}
                     </div>
                   </div>
                 </div>
@@ -272,4 +285,14 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block js %}
+  <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+  <script type="text/javascript">
+      $(document).ready(function() {
+          $(".reserve-document").modalForm({
+              formURL: "{% url 'circulation:reserve' object.id %}"
+          });
+      });
+  </script>
 {% endblock %}
