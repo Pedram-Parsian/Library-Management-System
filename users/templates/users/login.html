@@ -18,12 +18,12 @@
                   </div>
                 {% endfor %}
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input id="email" type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
-                         name="email" value="{{form.email.value|default:""}}" required>
-                  {% if form.email.errors %}
+                  <label for="username">Username</label>
+                  <input id="username" type="text" class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                         name="username" value="{{form.username.value|default:""}}" required>
+                  {% if form.username.errors %}
                     <div class="invalid-feedback">
-                      {{ form.email.errors }}
+                      {{ form.username.errors }}
                     </div>
                   {% endif %}
                 </div>

@@ -17,7 +17,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField()
+    username = forms.CharField()
     password = forms.CharField(strip=False, widget=forms.PasswordInput)
 
     def __init__(self, request=None, *args, **kwargs):
@@ -26,17 +26,17 @@ class LoginForm(forms.Form):
         super().__init__(*args, **kwargs)
 
     def clean(self):
-        email = self.cleaned_data.get("email")
+        username = self.cleaned_data.get("username")
         password = self.cleaned_data.get("password")
-        if email is not None and password:
-            self.user = authenticate(self.request, email=email, password=password)
+        if username is not None and password:
+            self.user = authenticate(self.request, username=username, password=password)
             if self.user is None:
-                raise forms.ValidationError("Invalid email/password combination.")
+                raise forms.ValidationError("Invalid username/password combination.")
             if self.user.email_activated:
                 # successful login
                 pass
             else:
-                resend_activation_email_url = reverse('resend_activation_email')
+                resend_activation_email_url = reverse('users:resend_activation_email')
                 message = f'Your email has not been confirmed! Please confirm your email or ' \
                           f'<a href="{resend_activation_email_url}">Request a new one.</a>'
                 raise forms.ValidationError(mark_safe(message))
