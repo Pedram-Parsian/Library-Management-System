@@ -24,11 +24,22 @@
                       <!-- end of modal -->
                       <h1 class="font-weight-bold">{{ object.title }}</h1>
                       <!-- change color of status line based on status -->
-                      <p class="h6">Status: {{ object.get_status }}</p>
+                      <p class="h6">
+                        Status:
+                        {% if item.status == item.AVAILABLE %}
+                          <span class="badge badge-pill bg-success text-right">Available</span>
+                        {% elif item.status == item.LOANED %}
+                          <span class="badge badge-pill bg-info text-right">Loaned</span>
+                        {% elif item.status == item.RESERVED %}
+                          <span class="badge badge-pill bg-warning text-right">Reserved</span>
+                        {% elif item.status == item.LOST %}
+                          <span class="badge badge-pill bg-danger text-right">Lost</span>
+                        {% endif %}
+                      </p>
                       {% if request.user.is_authenticated %}
-                      <button class="reserve-document btn btn-rounded btn-primary btn-lg float-right" type="button" name="button">Reserve</button>
+                        <button class="reserve-document btn btn-rounded btn-primary btn-lg float-right" type="button" name="button">Reserve</button>
                       {% else %}
-                      <a href="{% url 'users:login' %}" class="btn btn-rounded btn-primary btn-lg float-right">Reserve</a>
+                        <a href="{% url 'users:login' %}" class="btn btn-rounded btn-primary btn-lg float-right">Reserve</a>
                       {% endif %}
                     </div>
                   </div>
