@@ -49,8 +49,18 @@
               <tr>
                 <th scope="row">{{ item.id }}</th>
                 <td><a href="{% url 'documents:detail' item.slug %}">{{ item.title }}</a></td>
-                <td>{{ item.get_status }}</td>
-                <td>{{ item.location }}</td>
+                <td>
+                  {% if item.status == item.AVAILABLE %}
+                  <span class="badge badge-pill bg-success text-right">Available</span>
+                  {% elif item.status == item.LOANED %}
+                  <span class="badge badge-pill bg-info text-right">Loaned</span>
+                  {% elif item.status == item.RESERVED %}
+                  <span class="badge badge-pill bg-warning text-right">Reserved</span>
+                  {% elif item.status == item.LOST %}
+                  <span class="badge badge-pill bg-danger text-right">Lost</span>
+                  {% endif %}
+                </td>
+                <td>{{ item.location|default:"---" }}</td>
               </tr>
             {% empty %}
               <tr>
