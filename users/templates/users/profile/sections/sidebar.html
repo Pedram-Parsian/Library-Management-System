@@ -1,59 +1,59 @@
 {% load static %}
 <div class="col-lg-3 col-12 mt-1">
-    <div class="card mt-0">
-      <div class="card-body text-center">
-        <div class="text-center">
-          <img src="{{user.get_avatar}}" alt="{{user.first_name}} {{user.last_name}} Profile Picture">
-          <br>
-          <a class="small text-muted" href="">Change Image</a>
-          <br>
-          <br>
-          <h4>{{user.first_name|capfirst}} {{user.last_name|capfirst}}</h4>
-          <hr class="title-hr mt-2">
-        </div>
-        <a class="btn btn-info" href="{% url 'password_change' %}">Change Password</a>
-        <a class="btn btn-warning mt-2" href="{% url 'users:logout' %}">Sign out</a>
+  <div class="card mt-0">
+    <div class="card-body text-center">
+      <div class="text-center">
+        <img src="{{user.get_avatar}}" alt="{{user.first_name}} {{user.last_name}} Profile Picture">
+        <br>
+        <a class="small text-muted" href="">Change Image</a>
+        <br>
+        <br>
+        <h4>{{user.first_name|capfirst}} {{user.last_name|capfirst}}</h4>
+        <hr class="title-hr mt-2">
       </div>
+      <a class="btn btn-info" href="{% url 'password_change' %}">Change Password</a>
+      <a class="btn btn-warning mt-2" href="{% url 'users:logout' %}">Sign out</a>
     </div>
-    <div class="card my-5" style="border: none;">
-      <div class="card-body p-0">
-        <ul class="list-group">
-          <a href="{% url 'users:profile' %}">
-            <li class="list-group-item list-group-item-light {% if sidebar == 'PROFILE' %}active{% endif %}">
-              <i class="fas fa-laptop mr-5"></i>Profile
-            </li>
-          </a>
-            <a href="" class="my-1">
-              <li class="list-group-item list-group-item-light {% if sidebar == 'ORDERS' %}active{% endif %}">
-                <i class="fas fa-shopping-basket mr-5"></i>Orders
-              </li>
-            </a>
-            <a href="">
-              <li class="list-group-item list-group-item-light {% if sidebar == 'FAVORITES' %}active{% endif %}">
-                <i class="fa fa-star mr-5"></i>Favorite List
-              </li>
-            </a>
-            <a href="{% url 'users:comments' %}" class="my-1">
-              <li class="list-group-item list-group-item-light {% if sidebar == 'COMMENTS' %}active{% endif %}">
-                <i class="far fa-comment mr-5"></i>Comments
-              </li>
-            </a>
-            <a href="">
-              <li class="list-group-item list-group-item-light {% if sidebar == 'VOUCHERS' %}active{% endif %}">
-                <i class="fas fa-percentage mr-5"></i>Vouchers
-              </li>
-            </a>
-            <a href="" class="my-1">
-              <li class="list-group-item list-group-item-light {% if sidebar == 'ADDRESSES' %}active{% endif %}">
-                <i class="fas fa-map-marker-alt mr-5"></i>Addresses
-              </li>
-            </a>
-            <a href="">
-              <li class="list-group-item list-group-item-light {% if sidebar == 'NOTIFICATIONS' %}active{% endif %}">
-                <i class="fas fa-bell mr-5"></i>Notifications
-              </li>
-            </a>
-            </ul>
-          </div>
-        </div>
+  </div>
+  <div class="card my-5" style="border: none;">
+    <div class="card-body p-0">
+      <ul class="list-group">
+        <a href="{% url 'users:profile' %}">
+          <li class="list-group-item list-group-item-light {% if sidebar == 'PROFILE' %}active{% endif %}">
+            <i class="fas fa-laptop mr-5"></i>Profile
+          </li>
+        </a>
+        <a href="{% url 'users:reserves' %}" class="my-1">
+          <li class="list-group-item list-group-item-light {% if sidebar == 'RESERVES' %}active{% endif %}">
+            <i class="fas fa-clock mr-5"></i>Reserves
+          </li>
+        </a>
+        <a href="">
+          <li class="list-group-item list-group-item-light {% if sidebar == 'FAVORITES' %}active{% endif %}">
+            <i class="fa fa-star mr-5"></i>Favorite List
+          </li>
+        </a>
+        <a href="{% url 'users:comments' %}" class="my-1">
+          <li class="list-group-item list-group-item-light {% if sidebar == 'COMMENTS' %}active{% endif %}">
+            <i class="far fa-comment mr-5"></i>Comments
+          </li>
+        </a>
+        <a href="">
+          <li class="list-group-item list-group-item-light {% if sidebar == 'VOUCHERS' %}active{% endif %}">
+            <i class="fas fa-percentage mr-5"></i>Vouchers
+          </li>
+        </a>
+        <a href="" class="my-1">
+          <li class="list-group-item list-group-item-light {% if sidebar == 'ADDRESSES' %}active{% endif %}">
+            <i class="fas fa-map-marker-alt mr-5"></i>Addresses
+          </li>
+        </a>
+        <a href="">
+          <li class="list-group-item list-group-item-light {% if sidebar == 'NOTIFICATIONS' %}active{% endif %}">
+            <i class="fas fa-bell mr-5"></i>Notifications
+          </li>
+        </a>
+      </ul>
     </div>
+  </div>
+</div>
