@@ -55,7 +55,7 @@ class Document(models.Model):
     language = models.ForeignKey('Language', on_delete=models.PROTECT, blank=True, null=True)
     publications = models.ManyToManyField('Publication', blank=True)
     age_classification = models.ForeignKey('AgeClassification', on_delete=models.PROTECT, blank=True, null=True)
-    location = models.ForeignKey('Row', on_delete=models.PROTECT)
+    location = models.ForeignKey('Row', on_delete=models.PROTECT, blank=True, null=True)
     call_no = models.CharField(max_length=20, blank=True, null=True)
     authors = models.ManyToManyField('Author', blank=True)
     translators = models.ManyToManyField('Translator', blank=True)
