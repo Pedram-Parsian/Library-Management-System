@@ -12,6 +12,7 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse
 
+from circulation.models import Reserve
 from documents.models import Comment
 from . import forms
 from . import models
@@ -80,13 +81,37 @@ class ProfileCommentsView(LoginRequiredMixin, ListView):
         return context
 
 
-class ProfileCommentsDelete(LoginRequiredMixin, DeleteView):
+class ProfileReservesView(LoginRequiredMixin, ListView):
+    model = Reserve
+    login_url = reverse_lazy('login')
+    template_name = 'users/profile/reserves.html'
+
+    def get_queryset(self):
+        # todo maybe finding a more efficient way for finding the corresponding member:
+        return Reserve.objects.filter(member__user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sidebar'] = 'RESERVES'
+        return context
+
+
+class ProfileCommentDelete(LoginRequiredMixin, DeleteView):
     model = Comment
     success_url = reverse_lazy("comments")
 
+    # todo oh... is it the right way?! or shall we send a post request?
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
+
+class ProfileReserveDelete(LoginRequiredMixin, DeleteView):
+    model = Reserve
+    success_url = reverse_lazy("users:reserves")
+
+    # todo oh... is it the right way?! or shall we send a post request?
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 class SignupCompleteView(TemplateView):
     template_name = 'users/signup_complete.html'
