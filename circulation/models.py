@@ -70,24 +70,31 @@ class Reserve(models.Model):
     5. the reservation has been forced removed by staff or admin --> not accepted: forced_remove=True
     ?. if the member remove the reservation himself/herself, we will actually remove the row at DB
     """
+    WAITING = 10
+    AVAILABLE = 20
+    PROCEED = 30
+    EXPIRED = 40
+    FORCED_EXPIRED = 50
+    RESERVE_STATUS = (
+        (WAITING, 'Waiting...'),
+        (AVAILABLE, 'Available'),
+        (PROCEED, 'Proceed'),
+        (EXPIRED, 'Expired'),
+        (FORCED_EXPIRED, 'Expired by staff'),
+    )
+    # using a post-save signal, we will automatically fill the status field:
+    status = models.IntegerField(choices=RESERVE_STATUS, null=True, blank=True)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     available_since = models.DateTimeField(blank=True, null=True)
-    forced_expired = models.BooleanField(default=False)
     # after the member has submitted the issue, it will be stored here:
     # todo check if CASCADE is the right choice here
     issue = models.ForeignKey(Issue, blank=True, null=True, on_delete=models.CASCADE)
     description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
 
-    def issued(self):
-        """
-        Determined whether the book has been issued yet.
-        """
-        return True if self.issue_id else False
-
     def __str__(self):
-        return f'{self.member} reserve {self.document} @ {self.timestamp}'
+        return f'{self.member} reserve {self.document} @ {self.timestamp} - {self.get_status_display()}'
 
 
 class Renew(models.Model):
