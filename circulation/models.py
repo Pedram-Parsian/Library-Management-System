@@ -70,8 +70,9 @@ class Reserve(models.Model):
     5. the reservation has been forced removed by staff or admin --> not accepted: forced_remove=True
     ?. if the member remove the reservation himself/herself, we will actually remove the row at DB
     """
-    WAITING = 10
-    AVAILABLE = 20
+    # warning: do not change the following numbers, or change them as well in the corresponding template!
+    WAITING = 10  # possible to remove by member
+    AVAILABLE = 20  # possible to remove by member
     PROCEED = 30
     EXPIRED = 40
     FORCED_EXPIRED = 50
@@ -83,6 +84,7 @@ class Reserve(models.Model):
         (FORCED_EXPIRED, 'Expired by staff'),
     )
     # using a post-save signal, we will automatically fill the status field:
+    # todo write that signal!!
     status = models.IntegerField(choices=RESERVE_STATUS, null=True, blank=True)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
