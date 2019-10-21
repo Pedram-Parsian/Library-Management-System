@@ -6,4 +6,4 @@ from . import models
 class ReserveForm(BSModalForm):
     class Meta:
         model = models.Reserve
-        fields = ['document', 'description']
+        fields = ['description']
