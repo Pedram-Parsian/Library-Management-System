@@ -1,18 +1,18 @@
-from . import base
+from .base import *
 
-base.DEBUG = True
+DEBUG = True
 
-base.ALLOWED_HOSTS.append('*')
+ALLOWED_HOSTS.append('*')
 
-base.INSTALLED_APPS.insert(5, 'livereload')
+INSTALLED_APPS.insert(5, 'livereload')
 
-base.INSTALLED_APPS.append('debug_toolbar')
+INSTALLED_APPS.append('debug_toolbar')
 
 # email backend for local testing only
-base.EMAIL_BACKEND = (
+EMAIL_BACKEND = (
     "django.core.mail.backends.console.EmailBackend"
 )
 
-base.MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
-base.MIDDLEWARE.append('livereload.middleware.LiveReloadScript')
+MIDDLEWARE.append('livereload.middleware.LiveReloadScript')
