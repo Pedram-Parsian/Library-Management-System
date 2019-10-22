@@ -1,10 +1,16 @@
 import os
+from .secrets import (
+    _SECRET_KEY,
+    _DB_PASSWORD,
+    _RECAPTCHA_PUBLIC_KEY,
+    _RECAPTCHA_PRIVATE_KEY,
+)
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-SECRET_KEY = 'z(jkyl=kj7rj+9kmr3c1vg6ghi1010n6*p7&6kzzlash5pfq2$'
+SECRET_KEY = _SECRET_KEY
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -14,12 +20,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'livereload',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'rest_framework',
     'widget_tweaks',
     'captcha',
-    'debug_toolbar',
     'bootstrap_modal_forms',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
@@ -28,11 +33,9 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'accounting.apps.AccountingConfig',
     'reports.apps.ReportsConfig',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -40,7 +43,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = 'lms.urls'
@@ -63,21 +65,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lms.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'pedramparsian',
-#         'USER': 'djangodbman',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'lms',
+        'USER': 'djangodbman',
+        'PASSWORD': _DB_PASSWORD,
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -135,8 +130,8 @@ TEXTFIELD_MAX_LENGTH = 500
 DEFAULT_ACTIVATION_DATE = 7
 
 # Google reCAPTCHA:
-RECAPTCHA_PUBLIC_KEY = '_RECAPTCHA_PUBLIC_KEY'
+RECAPTCHA_PUBLIC_KEY = _RECAPTCHA_PUBLIC_KEY
 
-RECAPTCHA_PRIVATE_KEY = '_RECAPTCHA_PRIVATE_KEY'
+RECAPTCHA_PRIVATE_KEY = _RECAPTCHA_PRIVATE_KEY
 
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'
