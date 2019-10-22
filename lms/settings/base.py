@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'rest_framework',
     'widget_tweaks',
+    'import_export',
     'captcha',
     'bootstrap_modal_forms',
     'users.apps.UsersConfig',
