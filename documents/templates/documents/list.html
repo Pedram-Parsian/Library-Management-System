@@ -6,28 +6,54 @@
   <div class="container">
     <div class="row mt-5">
       <div class="col">
-        <div class="card bg-light">
-          <h5 class="card-header">Search</h5>
-          <div class="card-body">
-            <h5 class="card-title">Search in:</h5>
-            <form method="get" action="{% url 'documents:list' %}">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="search_field" id="title" value="title" checked>
-                <label class="form-check-label" for="title">Title</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="search_field" id="author" value="author">
-                <label class="form-check-label" for="author">Author</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="search_field" id="publisher" value="publisher">
-                <label class="form-check-label" for="publisher">Publisher</label>
-              </div>
-              <div class="form-group my-3">
-                <input type="text" name="search_query" class="form-control">
-              </div>
-              <input class="btn btn-outline-primary" type="submit" name="submit" value="Search"/>
-            </form>
+        <div class="card tab-card">
+          <div class="card-header tab-card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="tab_search" data-toggle="tab" href="#t_search" role="tab"
+                   aria-controls="Search"
+                   aria-selected="true">Search</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="tab_advanced_search" data-toggle="tab" href="#t_advanced_search" role="tab"
+                   aria-controls="Advanced Search"
+                   aria-selected="false">Advanced Search</a>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane fade show active p-3" id="t_search" role="tabpanel" aria-labelledby="tab_search">
+              <form method="get" action="{% url 'documents:list' %}">
+                <div class="form-group mb-3">
+                  <label for="search_query">
+                    Search query:
+                  </label>
+                  <input type="text" name="search_query" class="form-control" id="search_query">
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="search_field" id="title" value="title" checked>
+                  <label class="form-check-label" for="title">Title</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="search_field" id="authors" value="authors">
+                  <label class="form-check-label" for="authors">Authors</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="search_field" id="publisher" value="publisher">
+                  <label class="form-check-label" for="publisher">Publisher</label>
+                </div>
+                <div class="form-check my-3">
+                  <input class="form-check-input" checked name="available_only" type="checkbox" id="available_only">
+                  <label class="form-check-label" for="available_only">
+                    Show only available documents
+                  </label>
+                </div>
+                <input class="btn btn-outline-primary btn-block" type="submit" name="submit" value="Search"/>
+              </form>
+            </div>
+            <div class="tab-pane fade p-3" id="t_advanced_search" role="tabpanel" aria-labelledby="tab_advanced_search">
+              <h3>advance search is not ready yet!</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -51,13 +77,13 @@
                 <td><a href="{% url 'documents:detail' item.slug %}">{{ item.title }}</a></td>
                 <td>
                   {% if item.status == item.AVAILABLE %}
-                  <span class="badge badge-pill bg-success text-right">Available</span>
+                    <span class="badge badge-pill bg-success text-right">Available</span>
                   {% elif item.status == item.LOANED %}
-                  <span class="badge badge-pill bg-info text-right">Loaned</span>
+                    <span class="badge badge-pill bg-info text-right">Loaned</span>
                   {% elif item.status == item.RESERVED %}
-                  <span class="badge badge-pill bg-warning text-right">Reserved</span>
+                    <span class="badge badge-pill bg-warning text-right">Reserved</span>
                   {% elif item.status == item.LOST %}
-                  <span class="badge badge-pill bg-danger text-right">Lost</span>
+                    <span class="badge badge-pill bg-danger text-right">Lost</span>
                   {% endif %}
                 </td>
                 <td>{{ item.location|default:"---" }}</td>
@@ -75,27 +101,32 @@
     {% if page_obj.paginator.num_pages > 1 %}
       <div class="row">
         <div class="col">
-            <nav class="mb-5 pb-2">
-              <ul class="pagination flex-center">
-                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-                  <a class="page-link" aria-label="Previous" {% if page_obj.has_previous %}href="?{% url_replace request 'page' page_obj.previous_page_number %}"{% endif %} {% if not page_obj.has_previous %}tabindex="-1"{% endif %}>
-                    <i class="fas fa-angle-left" aria-hidden="true"></i>
-                    <span class="sr-only">Previous</span>
-                  </a>
+          <nav class="mb-5 pb-2">
+            <ul class="pagination flex-center">
+              <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                <a class="page-link" aria-label="Previous"
+                   {% if page_obj.has_previous %}href="?{% url_replace request 'page' page_obj.previous_page_number %}"{% endif %}
+                   {% if not page_obj.has_previous %}tabindex="-1"{% endif %}>
+                  <i class="fas fa-angle-left" aria-hidden="true"></i>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              {% for pagenum in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == pagenum %}active{% endif %}">
+                  <a class="page-link"
+                     {% if page_obj.number != pagenum %}href="?{% url_replace request 'page' pagenum %}"{% endif %}>{{ pagenum }}</a>
                 </li>
-                {% for pagenum in page_obj.paginator.page_range %}
-                  <li class="page-item {% if page_obj.number == pagenum %}active{% endif %}">
-                    <a class="page-link" {% if page_obj.number != pagenum %}href="?{% url_replace request 'page' pagenum %}"{% endif %}>{{ pagenum }}</a>
-                  </li>
-                {% endfor %}
-                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                  <a class="page-link" aria-label="Next" {% if page_obj.has_next %}href="?{% url_replace request 'page' page_obj.next_page_number %}"{% endif %} {% if not page_obj.has_next %}tabindex="-1"{% endif %}>
-                    <i class="fas fa-angle-right" aria-hidden="true"></i>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+              {% endfor %}
+              <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link" aria-label="Next"
+                   {% if page_obj.has_next %}href="?{% url_replace request 'page' page_obj.next_page_number %}"{% endif %}
+                   {% if not page_obj.has_next %}tabindex="-1"{% endif %}>
+                  <i class="fas fa-angle-right" aria-hidden="true"></i>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     {% endif %}
