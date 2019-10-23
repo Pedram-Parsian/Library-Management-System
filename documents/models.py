@@ -146,14 +146,14 @@ class Row(models.Model):
 
 
 class Publisher(models.Model):
-    title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
+    name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     date_of_establishment = models.DateField(blank=True, null=True)
     refer_to = models.ForeignKey('self', blank=True, null=True, on_delete=models.PROTECT)
 
     def __str__(self):
         if self.refer_to:
-            return f'{self.title} ({self.refer_to.title})'
-        return f'{self.title}'
+            return f'{self.name} ({self.refer_to.name})'
+        return f'{self.name}'
 
 
 class AgeClassification(models.Model):
