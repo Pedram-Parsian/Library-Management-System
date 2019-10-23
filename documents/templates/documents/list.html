@@ -111,12 +111,32 @@
                   <span class="sr-only">Previous</span>
                 </a>
               </li>
-              {% for pagenum in page_obj.paginator.page_range %}
-                <li class="page-item {% if page_obj.number == pagenum %}active{% endif %}">
-                  <a class="page-link"
-                     {% if page_obj.number != pagenum %}href="?{% url_replace request 'page' pagenum %}"{% endif %}>{{ pagenum }}</a>
+
+
+              {% if page_obj.number|add:'-4' > 1 %}
+                <li class="page-item"><a class="page-link"
+                                         href="?{% url_replace request 'page' page_obj.number|add:'-5' %}">&hellip;</a>
                 </li>
+              {% endif %}
+
+
+
+              {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                  <li class="active page-item"><span class="page-link">{{ i }} <span
+                    class="sr-only">(current)</span></span></li>
+                {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
+                  <li class="page-item"><a class="page-link" href="?{% url_replace request 'page' i %}">{{ i }}</a></li>
+                {% endif %}
               {% endfor %}
+
+              {% if page_obj.paginator.num_pages > page_obj.number|add:'4' %}
+                <li class="page-item"><a class="page-link"
+                                         href="?{% url_replace request 'page' page_obj.number|add:'5' %}">&hellip;</a>
+                </li>
+              {% endif %}
+
+
               <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
                 <a class="page-link" aria-label="Next"
                    {% if page_obj.has_next %}href="?{% url_replace request 'page' page_obj.next_page_number %}"{% endif %}
