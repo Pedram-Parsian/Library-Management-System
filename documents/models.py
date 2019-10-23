@@ -27,7 +27,7 @@ class Document(models.Model):
     AVAILABLE = 10  # the document is ready to be checked out. reserving is not possible
     RESERVED = 20  # document is available in the library, but it's reserved. checkout for others is not allowed.
     LOANED = 30  # document is out of library, may also be reserved too (edge case)
-    LOST = 40 # document is lost and not available at all, but keep info for refrencing
+    LOST = 40  # document is lost and not available at all, but keep info for refrencing
     DOCUMENT_STATUS = (
         (AVAILABLE, 'Available'),
         (RESERVED, 'Reserved'),
@@ -53,7 +53,7 @@ class Document(models.Model):
     edition = models.PositiveSmallIntegerField(blank=True, null=True)
     copies = models.PositiveIntegerField(blank=True, null=True)
     language = models.ForeignKey('Language', on_delete=models.PROTECT, blank=True, null=True)
-    publications = models.ManyToManyField('Publication', blank=True)
+    publisher = models.ForeignKey('Publisher', on_delete=models.PROTECT, null=True, blank=True)
     age_classification = models.ForeignKey('AgeClassification', on_delete=models.PROTECT, blank=True, null=True)
     location = models.ForeignKey('Row', on_delete=models.PROTECT, blank=True, null=True)
     call_no = models.CharField(max_length=20, blank=True, null=True)
@@ -145,7 +145,7 @@ class Row(models.Model):
         return f'Row {self.title}'
 
 
-class Publication(models.Model):
+class Publisher(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     date_of_establishment = models.DateField(blank=True, null=True)
     refer_to = models.ForeignKey('self', blank=True, null=True, on_delete=models.PROTECT)
@@ -162,4 +162,3 @@ class AgeClassification(models.Model):
 
     def __str__(self):
         return f'{self.title} (from {self.min_age} years old)'
-
