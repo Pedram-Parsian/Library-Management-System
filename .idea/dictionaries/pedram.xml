@@ -4,6 +4,7 @@
       <w>checkoutable</w>
       <w>confirmable</w>
       <w>enduml</w>
+      <w>gmail</w>
       <w>gravatar</w>
       <w>identicon</w>
       <w>jalali</w>
@@ -11,7 +12,9 @@
       <w>navbar</w>
       <w>parsian</w>
       <w>pedram</w>
+      <w>postgre</w>
       <w>skinparam</w>
+      <w>smtp</w>
       <w>startuml</w>
       <w>toggler</w>
       <w>typeit</w>
