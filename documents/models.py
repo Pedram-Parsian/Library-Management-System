@@ -61,6 +61,7 @@ class Document(models.Model):
     translators = models.ManyToManyField('Translator', blank=True)
     editors = models.ManyToManyField('Editor', blank=True)
     number_of_pages = models.IntegerField(blank=True, null=True)
+    published_year = models.IntegerField(blank=True, null=True)
     description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
 
     # todo generate call_no based on row (location) + id + hash + ...
