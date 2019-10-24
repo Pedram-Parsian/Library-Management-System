@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="icon" href="{% static 'img/logo.png' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+  {% block css %}{% endblock %}
+</head>
+<body>
+<div class="container">
+  <div class="card border-dark my-5">
+  <div class="card-header">Report</div>
+  <div class="card-body text-dark">
+    <h5 class="card-title">Members List</h5>
+    <p class="card-text text-muted font-italic">generated on: {% now "jS F Y H:i" %}</p>
+    <a href="">download pdf</a>
+  </div>
+</div>
+  {% block content %}{% endblock %}
+</div>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

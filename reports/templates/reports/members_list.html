@@ -1,0 +1,25 @@
+{% extends 'reports/base.html' %}
+{% block content %}
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Family</th>
+      <th scope="col">Class</th>
+      <th scope="col">Identification</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for member in object_list %}
+      <tr>
+        <th scope="row">{{ member.pk }}</th>
+        <td>{{ member.user.first_name }}</td>
+        <td>{{ member.user.last_name }}</td>
+        <td>{{ member.group }}</td>
+        <td>{{ member.user.identification_code }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
