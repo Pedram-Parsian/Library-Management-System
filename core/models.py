@@ -13,7 +13,6 @@ class BaseComment(models.Model):
         (REFUSED, 'Refused'),
         (WAITING, 'Waiting...')
     )
-
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     text = models.TextField(max_length=600)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
