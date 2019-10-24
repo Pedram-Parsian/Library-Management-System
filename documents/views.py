@@ -6,22 +6,25 @@ from . import models
 class DocumentListView(ListView):
     template_name = 'documents/list.html'
     model = models.Document
-    paginate_by = 10
+    paginate_by = 100
 
     def get_queryset(self):
         search_field = self.request.GET.get('search_field')
         search_query = self.request.GET.get('search_query')
+        available_only = True if 'available_only' in self.request.GET else False
+        search_dict = {}
 
-        # todo switch to postgresql to work:
+        if available_only:
+            search_dict['status'] = models.Document.AVAILABLE
         if search_query:
             if search_field == 'title':
-                return models.Document.objects.filter(title__search=search_query)
+                search_dict['title__search'] = search_query
             elif search_field == 'author':
-                return models.Document.objects.filter(authors__name__search=search_query)
+                search_dict['authors__name__search'] = search_query
             elif search_field == 'publisher':
-                return models.Document.objects.filter(publications__name__search=search_query)
+                search_dict['publisher__name__search'] = search_query
 
-        return models.Document.objects.all()
+        return models.Document.objects.filter(**search_dict)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
