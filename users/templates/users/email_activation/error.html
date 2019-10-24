@@ -11,7 +11,7 @@ Pedram Parsian - Email Activation Failed
     {% if ERR_TYPE == 'FORCED_EXPIRED' %}
     <p>Looks like our admins have explicitly expire your email activation! That means your email can not be activated. Maybe that was just a mistake! <a href="{% url 'home' %}#contact">Contact the admin</a> to fix it!</p>
     {% elif ERR_TYPE == 'EXPIRED' %}
-    <p>You are too late! The activation link has been expired! You can <a href="url 'resend_activation_email'">request a new one here</a>!</p>
+    <p>You are too late! The activation link has been expired! You can <a href="url 'users:resend_activation_email'">request a new one here</a>!</p>
     <small>Remember that you should activate your email within {{EXPIRE_DAYS}} days!</small>
     {% else %}
     <p>The key you provide for email-activation is not valid!</p>
