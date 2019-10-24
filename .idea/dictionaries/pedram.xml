@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="pedram">
     <words>
+      <w>charfield</w>
       <w>checkoutable</w>
       <w>confirmable</w>
       <w>enduml</w>
@@ -14,6 +15,7 @@
       <w>pedram</w>
       <w>postgre</w>
       <w>skinparam</w>
+      <w>slugfield</w>
       <w>smtp</w>
       <w>startuml</w>
       <w>toggler</w>

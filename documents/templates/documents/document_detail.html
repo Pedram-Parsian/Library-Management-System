@@ -26,21 +26,25 @@
                       <!-- change color of status line based on status -->
                       <p class="h6">
                         Status:
-                        {% if item.status == item.AVAILABLE %}
+                        {% if object.status == object.AVAILABLE %}
                           <span class="badge badge-pill bg-success text-right">Available</span>
-                        {% elif item.status == item.LOANED %}
+                        {% elif object.status == object.LOANED %}
                           <span class="badge badge-pill bg-info text-right">Loaned</span>
-                        {% elif item.status == item.RESERVED %}
+                        {% elif object.status == object.RESERVED %}
                           <span class="badge badge-pill bg-warning text-right">Reserved</span>
-                        {% elif item.status == item.LOST %}
+                        {% elif object.status == object.LOST %}
                           <span class="badge badge-pill bg-danger text-right">Lost</span>
                         {% endif %}
                       </p>
+                    {% if object.status != object.LOST %}
                       {% if request.user.is_authenticated %}
                         <button class="reserve-document btn btn-rounded btn-primary btn-lg float-right" type="button" name="button">Reserve</button>
                       {% else %}
                         <a href="{% url 'users:login' %}" class="btn btn-rounded btn-primary btn-lg float-right">Reserve</a>
                       {% endif %}
+                    {% else %}
+                      <a class="btn btn-rounded btn-danger disabled btn-lg float-right">Sorry, The document is no longer available</a>
+                    {% endif %}
                     </div>
                   </div>
                 </div>
