@@ -2,9 +2,8 @@ from datetime import timedelta
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-from lms.utilities import convert_range
-from users.models import User
-from core.models import BaseComment
+from lms.utilities import convert_range, get_gravatar_url
+from users.models import User, Member
 
 
 class PostManager(models.Manager):
@@ -132,8 +131,35 @@ class PostCategory(models.Model):
         return self.title
 
 
-class PostComment(BaseComment):
+class PostComment(models.Model):
+    APPROVED = 10
+    REFUSED = 20
+    WAITING = 30
+    STATUS_CHOICES = (
+        (APPROVED, 'Approved'),
+        (REFUSED, 'Refused'),
+        (WAITING, 'Waiting...')
+    )
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH, blank=True, null=True)
+    email = models.EmailField(max_length=50, blank=True, null=True)
+    text = models.TextField(max_length=600)
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_edited = models.DateTimeField(auto_now=True)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=WAITING)
+
+    def get_avatar(self):
+        if not self.member_id:
+            return get_gravatar_url(self.email)
+        return self.member.user.get_avatar()
+
+    def get_info(self):
+        if self.member_id:
+            return self.member.user.first_name, self.member.user.last_name
+        else:
+            return self.name, None
 
     def __str__(self):
         name, family = self.get_info()

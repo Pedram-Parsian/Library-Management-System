@@ -13,7 +13,7 @@ from django.conf import settings
 from django.http import HttpResponse
 
 from circulation.models import Reserve, Issue
-from documents.models import Comment
+from documents.models import DocumentComment
 from . import forms
 from . import models
 
@@ -68,12 +68,12 @@ class ProfileView(LoginRequiredMixin, FormView):
 
 
 class ProfileCommentsView(LoginRequiredMixin, ListView):
-    model = Comment
+    model = DocumentComment
     login_url = reverse_lazy('login')
     template_name = 'users/profile/comments.html'
 
     def get_queryset(self):
-        return Comment.objects.filter(user=self.request.user)
+        return DocumentComment.objects.filter(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -112,7 +112,7 @@ class ProfileIssuesView(LoginRequiredMixin, ListView):
 
 
 class ProfileCommentDelete(LoginRequiredMixin, DeleteView):
-    model = Comment
+    model = DocumentComment
     success_url = reverse_lazy("comments")
 
     # todo oh... is it the right way?! or shall we send a post request?
