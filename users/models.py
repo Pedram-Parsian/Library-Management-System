@@ -168,6 +168,7 @@ class EmailActivation(models.Model):
                 subject = 'Confirm Your Email'
                 from_email = settings.DEFAULT_FROM_EMAIL
                 recipient_list = [self.email]
-                sent_mail = send_mail(subject, txt_, from_email, recipient_list, html_message=html_, fail_silently=False)
+                sent_mail = send_mail(subject, txt_, from_email, recipient_list, html_message=html_,
+                                      fail_silently=False)
                 return sent_mail
         return False
