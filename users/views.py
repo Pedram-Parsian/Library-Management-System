@@ -61,7 +61,7 @@ class ProfileView(LoginRequiredMixin, FormView):
         kwargs['instance'] = self.request.user
         return kwargs
 
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('users:profile')
     form_class = forms.UpdateInfo
     login_url = reverse_lazy('login')
     template_name = 'users/profile/profile.html'
@@ -112,6 +112,7 @@ class ProfileReserveDelete(LoginRequiredMixin, DeleteView):
     # todo oh... is it the right way?! or shall we send a post request?
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
 
 class SignupCompleteView(TemplateView):
     template_name = 'users/signup_complete.html'
@@ -165,4 +166,3 @@ class ResendActivationEmail(FormView):
 
 class ResendActivationEmailSuccessful(TemplateView):
     template_name = 'users/email_activation/resend_successful.html'
-
