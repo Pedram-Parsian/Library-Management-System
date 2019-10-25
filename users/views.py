@@ -53,7 +53,7 @@ class ProfileView(LoginRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sidebar'] = 'PROFILE'
+        context['sidebar'] = 'profile'
         return context
 
     def get_form_kwargs(self):
@@ -77,7 +77,7 @@ class ProfileCommentsView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sidebar'] = 'COMMENTS'
+        context['sidebar'] = 'comments'
         return context
 
 
@@ -92,7 +92,7 @@ class ProfileReservesView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sidebar'] = 'RESERVES'
+        context['sidebar'] = 'reserves'
         return context
 
 
