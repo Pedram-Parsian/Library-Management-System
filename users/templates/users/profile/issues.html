@@ -1,0 +1,19 @@
+{% extends "users/profile/profile_base.html" %}
+{% load static %}
+{% block profile %}
+  <div class="card card-body mb-5">
+    <h2 class="font-weight-bold mt-3">
+      <strong>Your Issues</strong>
+    </h2>
+    <hr>
+    <div class="row mb-4">
+      {% for issue in object_list %}
+      {% empty %}
+        <br>
+        <div class="col-md-6 mt-3">
+          <h5>Looks empty!</h5>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
