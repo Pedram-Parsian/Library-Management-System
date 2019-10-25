@@ -63,13 +63,13 @@ class ProfileView(LoginRequiredMixin, FormView):
 
     success_url = reverse_lazy('users:profile')
     form_class = forms.UpdateInfo
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy('users:login')
     template_name = 'users/profile/profile.html'
 
 
 class ProfileCommentsView(LoginRequiredMixin, ListView):
     model = DocumentComment
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy('users:login')
     template_name = 'users/profile/comments.html'
 
     def get_queryset(self):
@@ -83,7 +83,7 @@ class ProfileCommentsView(LoginRequiredMixin, ListView):
 
 class ProfileReservesView(LoginRequiredMixin, ListView):
     model = Reserve
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy('users:login')
     template_name = 'users/profile/reserves.html'
 
     def get_queryset(self):
@@ -98,7 +98,7 @@ class ProfileReservesView(LoginRequiredMixin, ListView):
 
 class ProfileIssuesView(LoginRequiredMixin, ListView):
     model = Issue
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy('users:login')
     template_name = 'users/profile/issues.html'
 
     def get_queryset(self):
