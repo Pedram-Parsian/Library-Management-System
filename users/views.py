@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse
 
-from circulation.models import Reserve
+from circulation.models import Reserve, Issue
 from documents.models import Comment
 from . import forms
 from . import models
@@ -93,6 +93,21 @@ class ProfileReservesView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sidebar'] = 'RESERVES'
+        return context
+
+
+class ProfileIssuesView(LoginRequiredMixin, ListView):
+    model = Issue
+    login_url = reverse_lazy('login')
+    template_name = 'users/profile/issues.html'
+
+    def get_queryset(self):
+        # todo maybe finding a more efficient way for finding the corresponding member:
+        return Issue.objects.filter(member__user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sidebar'] = 'issues'
         return context
 
 
