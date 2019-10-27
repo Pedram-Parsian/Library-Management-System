@@ -24,7 +24,7 @@ class DocumentListView(ListView):
             elif search_field == 'publisher':
                 search_dict['publisher__name__search'] = search_query
 
-        return models.Document.objects.filter(**search_dict)
+        return models.Document.objects.order_by('id').filter(**search_dict)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,11 +33,22 @@ class DocumentListView(ListView):
 
 
 class DocumentDetailView(DetailView):
+    template_name = 'documents/document_detail.html'
     model = models.Document
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['comments'] = models.DocumentComment.objects.filter(document=self.get_object(),
                                                                     status=models.DocumentComment.APPROVED)
+        context['navbar'] = 'documents'
+        return context
+
+
+class AuthorDetailView(DetailView):
+    template_name = 'documents/author_detail.html'
+    model = models.Author
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['navbar'] = 'documents'
         return context
