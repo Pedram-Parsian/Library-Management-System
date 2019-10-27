@@ -82,3 +82,13 @@ class PublisherDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'documents'
         return context
+
+
+class AgeClassificationDetailView(DetailView):
+    template_name = 'documents/age_classification_detail.html'
+    model = models.AgeClassification
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['navbar'] = 'documents'
+        return context
