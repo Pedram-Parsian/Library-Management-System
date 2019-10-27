@@ -128,9 +128,10 @@
                     {% endif %}
                     {% if object.age_classification %}
                       <tr>
-                        <!-- todo add link to it to show the details -->
                         <th>Age Classification</th>
-                        <td>{{ object.age_classification }}</td>
+                        <td><a
+                          href="{% url 'documents:age-classification' object.age_classification_id %}">{{ object.age_classification }}</a>
+                        </td>
                       </tr>
                     {% endif %}
                     {% if object.location %}
