@@ -54,6 +54,26 @@ class AuthorDetailView(DetailView):
         return context
 
 
+class TranslatorDetailView(DetailView):
+    template_name = 'documents/translator_detail.html'
+    model = models.Translator
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['navbar'] = 'documents'
+        return context
+
+
+class EditorDetailView(DetailView):
+    template_name = 'documents/editor_detail.html'
+    model = models.Editor
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['navbar'] = 'documents'
+        return context
+
+
 class PublisherDetailView(DetailView):
     template_name = 'documents/publisher_detail.html'
     model = models.Publisher
