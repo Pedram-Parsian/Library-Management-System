@@ -153,16 +153,24 @@
                     {% endif %}
                     {% if object.translators.all %}
                       <tr>
-                        <!-- todo add link to each one to show the details and their books -->
                         <th>Translators</th>
-                        <td>{{ object.translators.all|join:', ' }}</td>
+                        <td>
+                          {% for translator in object.translators.all %}
+                            <a href="{% url 'documents:translator' translator.pk %}">
+                              {{ translator.name }}{% if not forloop.last %}, {% endif %}</a>
+                          {% endfor %}
+                        </td>
                       </tr>
                     {% endif %}
                     {% if object.editors.all %}
                       <tr>
-                        <!-- todo add link to each one to show the details and their books -->
                         <th>Editors</th>
-                        <td>{{ object.editors.all|join:', ' }}</td>
+                        <td>
+                          {% for editor in object.editors.all %}
+                            <a href="{% url 'documents:editor' editor.pk %}">
+                              {{ editor.name }}{% if not forloop.last %}, {% endif %}</a>
+                          {% endfor %}
+                        </td>
                       </tr>
                     {% endif %}
                     {% if object.number_of_pages %}
