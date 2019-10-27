@@ -52,3 +52,13 @@ class AuthorDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'documents'
         return context
+
+
+class PublisherDetailView(DetailView):
+    template_name = 'documents/publisher_detail.html'
+    model = models.Publisher
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['navbar'] = 'documents'
+        return context
