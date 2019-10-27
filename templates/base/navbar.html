@@ -1,5 +1,6 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-secondary {% if navbar == 'home' %} fixed-top navbar-fixed-top{% endif %}">
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-secondary {% if navbar == 'home' %} fixed-top navbar-fixed-top{% endif %}">
   <div class="container">
     <a class="navbar-brand font-weight-bold" href="{% url 'home' %}">
       <img src="{% static 'img/logo.png' %}" class="mr-2" width="32" height="32" alt="lms logo">
@@ -13,10 +14,6 @@
       <ul class="navbar-nav mr-auto">
         <li class="nav-item {% if navbar == 'documents' %}active{% endif %}">
           <a class="nav-link" href="{% url 'documents:list' %}">Documents {% if navbar == 'documents' %}<span
-            class="sr-only">(current)</span>{% endif %}</a>
-        </li>
-        <li class="nav-item {% if navbar == 'checkout' %}active{% endif %}">
-          <a class="nav-link" href="">Checkout {% if navbar == 'checkout' %}<span
             class="sr-only">(current)</span>{% endif %}</a>
         </li>
         <li class="nav-item {% if navbar == 'blog' %}active{% endif %}">
@@ -38,7 +35,8 @@
             <a class="btn text-light p-0" href="#" id="navbarDropdownMore" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false" style="box-shadow: none;">
               <div class="media">
-                <img class="align-self-center img-fluid rounded rounded-circle mr-1" style="width: 35px; height: 35px;" src="{{request.user.get_avatar}}" alt="{{ request.user.get_info }} Avatar">
+                <img class="align-self-center img-fluid rounded rounded-circle mr-1" style="width: 35px; height: 35px;"
+                     src="{{ request.user.get_avatar }}" alt="{{ request.user.get_info }} Avatar">
                 <span id="NO_badge_cont" class="NO_visible"><span id="NO_badge" class="NO_hidden"></span></span>
                 <p class="align-self-center p-0 m-0 dropdown-toggle"></p>
               </div>
