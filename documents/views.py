@@ -37,7 +37,7 @@ class DocumentDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = models.Comment.objects.filter(document=self.get_object(),
-                                                            status=models.Comment.APPROVED)
+        context['comments'] = models.DocumentComment.objects.filter(document=self.get_object(),
+                                                                    status=models.DocumentComment.APPROVED)
         context['navbar'] = 'documents'
         return context
