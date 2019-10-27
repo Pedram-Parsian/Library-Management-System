@@ -36,15 +36,18 @@
                           <span class="badge badge-pill bg-danger text-right">Lost</span>
                         {% endif %}
                       </p>
-                    {% if object.status != object.LOST %}
-                      {% if request.user.is_authenticated %}
-                        <button class="reserve-document btn btn-rounded btn-primary btn-lg float-right" type="button" name="button">Reserve</button>
+                      {% if object.status != object.LOST %}
+                        {% if request.user.is_authenticated %}
+                          <button class="reserve-document btn btn-rounded btn-primary btn-lg float-right" type="button"
+                                  name="button">Reserve
+                          </button>
+                        {% else %}
+                          <a href="{% url 'users:login' %}" class="btn btn-rounded btn-primary btn-lg float-right">Reserve</a>
+                        {% endif %}
                       {% else %}
-                        <a href="{% url 'users:login' %}" class="btn btn-rounded btn-primary btn-lg float-right">Reserve</a>
+                        <a class="btn btn-rounded btn-danger disabled btn-lg float-right">Sorry, The document is no
+                          longer available</a>
                       {% endif %}
-                    {% else %}
-                      <a class="btn btn-rounded btn-danger disabled btn-lg float-right">Sorry, The document is no longer available</a>
-                    {% endif %}
                     </div>
                   </div>
                 </div>
@@ -116,11 +119,11 @@
                         <td>{{ object.Copies }}</td>
                       </tr>
                     {% endif %}
-                    {% if object.publications.all %}
+                    {% if object.publisher %}
                       <tr>
-                        <!-- todo add link to each pub to show all the books of that -->
-                        <th>Publications</th>
-                        <td>{{ object.publications.all|join:', ' }}</td>
+                        <th>Publisher</th>
+                        <td><a href="{% url 'documents:publisher' object.publisher.pk %}">{{ object.publisher }}</a>
+                        </td>
                       </tr>
                     {% endif %}
                     {% if object.age_classification %}
@@ -139,9 +142,13 @@
                     {% endif %}
                     {% if object.authors.all %}
                       <tr>
-                        <!-- todo add link to each one to show the details and their books -->
                         <th>Authors</th>
-                        <td>{{ object.authors.all|join:', ' }}</td>
+                        <td>
+                          {% for author in object.authors.all %}
+                            <a href="{% url 'documents:author' author.pk %}">
+                              {{ author.name }}{% if not forloop.last %}, {% endif %}</a>
+                          {% endfor %}
+                        </td>
                       </tr>
                     {% endif %}
                     {% if object.translators.all %}
@@ -188,24 +195,26 @@
                     <div class="text-center text-md-left">
                       <div class="text-center mt-2 mb-4">
                         <h3 class="font-weight-bold">Comments
-                          <span class="badge badge-secondary">{{comments|length}}</span>
+                          <span class="badge badge-secondary">{{ comments|length }}</span>
                         </h3>
                       </div>
                       {% for comment in comments %}
                         <div class="row mb-5">
                           <div class="col-sm-2 col-12 mb-3">
-                            <img src="{{comment.get_avatar}}" alt="{{comment.get_info.0}} Avatar">
+                            <img src="{{ comment.get_avatar }}" alt="{{ comment.get_info.0 }} Avatar">
                           </div>
                           <div class="col-sm-10 col-12">
-                            <h5 class="font-weight-bold mb-0">{{comment.get_info.0|capfirst}}{% if comment.get_info.1 %}
-                              {{ comment.get_info.1|capfirst }}{% endif %}
+                            <h5 class="font-weight-bold mb-0">
+                              {{ comment.get_info.0|capfirst }}{% if comment.get_info.1 %}
+                                {{ comment.get_info.1|capfirst }}{% endif %}
                               <fieldset class="starability-result" data-rating="{{ comment.vote }}">
                                 Rated: {{ comment.vote }} stars
-                              </fieldset></h5>
+                              </fieldset>
+                            </h5>
                             <div class="card-data">
-                              <small class="text-muted mt-0">{{comment.date_added|date:'Y/m/d'}}</small>
+                              <small class="text-muted mt-0">{{ comment.date_added|date:'Y/m/d' }}</small>
                             </div>
-                            <p>{{comment.text}}</p>
+                            <p>{{ comment.text }}</p>
                           </div>
                         </div>
                       {% endfor %}
@@ -226,14 +235,15 @@
                   <h3 class="text-center pt-5 font-weight-bold">Leave a comment</h3>
                   <form method="POST"> {% csrf_token %}
                     {% if request.user.is_authenticated %}
-                      <p class="text-center">Logged in as <a href="">{{request.user.first_name}}</a>.
+                      <p class="text-center">Logged in as <a href="">{{ request.user.first_name }}</a>.
                         <a href="">Logout?</a></p>
                     {% else %}
                       <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="name">Your name</label>
-                          <input id="name" type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}"
-                                 name="name" value="{{form.name.value|default:""}}">
+                          <input id="name" type="text"
+                                 class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                                 name="name" value="{{ form.name.value|default:"" }}">
                           {% if form.name.errors %}
                             <div class="invalid-feedback">
                               {{ form.name.errors }}
@@ -242,8 +252,9 @@
                         </div>
                         <div class="form-group col-md-6">
                           <label for="email">Your email</label>
-                          <input id="email" type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
-                                 name="email" value="{{form.email.value|default:""}}">
+                          <input id="email" type="email"
+                                 class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                 name="email" value="{{ form.email.value|default:"" }}">
                           {% if form.email.errors %}
                             <div class="invalid-feedback">
                               {{ form.email.errors }}
@@ -256,7 +267,8 @@
                       <label for="vote">Your vote</label>
                       <!-- todo post comment vote not working!                     -->
                       <fieldset class="starability-growRotate">
-                        <input type="radio" id="no-rate-growRotate" class="input-no-rate" name="rating" value="0" checked="" aria-label="No rating.">
+                        <input type="radio" id="no-rate-growRotate" class="input-no-rate" name="rating" value="0"
+                               checked="" aria-label="No rating.">
                         <input type="radio" id="growRotate-rate1" name="rating" value="1">
                         <label for="growRotate-rate1" title="Terrible">1 star</label>
                         <input type="radio" id="growRotate-rate2" name="rating" value="2">
@@ -270,7 +282,8 @@
                         <span class="starability-focus-ring"></span>
                       </fieldset>
                       <!--                      <input min="1" max="5" type="number" name="vote" id="vote"-->
-                      <!--                             class="form-control {% if form.vote.errors %}is-invalid{% endif %}">{{form.text.value|default:""}}</input>-->
+                      <!--                             class="form-control {% if form.vote.errors %}
+                        is-invalid{% endif %}">{{form.text.value|default:""}}</input>-->
                       {% if form.vote.errors %}
                         <div class="invalid-feedback">
                           {{ form.vote.errors }}
@@ -281,7 +294,7 @@
                       <label for="message">Your comment</label>
                       <textarea rows='3' name="text" id="text"
                                 class="form-control {% if form.text.errors %}is-invalid{% endif %}"
-                                rows="3">{{form.text.value|default:""}}</textarea>
+                                rows="3">{{ form.text.value|default:"" }}</textarea>
                       {% if form.text.errors %}
                         <div class="invalid-feedback">
                           {{ form.text.errors }}
@@ -304,7 +317,7 @@
 {% block js %}
   <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
   <script type="text/javascript">
-      $(document).ready(function() {
+      $(document).ready(function () {
           $(".reserve-document").modalForm({
               formURL: "{% url 'circulation:reserve' object.id %}"
           });
