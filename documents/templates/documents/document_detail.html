@@ -122,7 +122,7 @@
                     {% if object.publisher %}
                       <tr>
                         <th>Publisher</th>
-                        <td><a href="{% url 'documents:publisher' object.publisher.pk %}">{{ object.publisher }}</a>
+                        <td><a href="{% url 'documents:publisher' object.publisher_id %}">{{ object.publisher }}</a>
                         </td>
                       </tr>
                     {% endif %}
