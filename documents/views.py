@@ -9,6 +9,7 @@ class DocumentListView(ListView):
     paginate_by = 100
 
     def get_queryset(self):
+        sort_by = self.request.GET.get('sort_by')
         search_field = self.request.GET.get('search_field')
         search_query = self.request.GET.get('search_query')
         available_only = True if 'available_only' in self.request.GET else False
@@ -24,11 +25,24 @@ class DocumentListView(ListView):
             elif search_field == 'publisher':
                 search_dict['publisher__name__search'] = search_query
 
-        return models.Document.objects.order_by('id').filter(**search_dict)
+        if sort_by:
+            if sort_by == '1':
+                sort_by = 'title'
+            elif sort_by == '2':
+                sort_by = 'publisher__name'
+            elif sort_by == '3':
+                sort_by = '???'  # todo complete this sorting
+            elif sort_by == '4':
+                sort_by = '???'  # todo complete this sorting
+        else:
+            sort_by = 'id'
+
+        return models.Document.objects.order_by(sort_by).filter(**search_dict)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'documents'
+        context['sort_by'] = self.request.GET.get('sort_by')
         return context
 
 

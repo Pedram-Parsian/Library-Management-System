@@ -61,6 +61,19 @@
     <div class="row">
       <div class="col">
         <div class="my-4">
+          <div class="my-2">
+            <span class="text-muted mr-3">Sort by:</span>
+            <a href="?{% url_replace request 'sort_by' 1 %}"
+               class="btn {% if sort_by == '1' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Title</a>
+            <a href="?{% url_replace request 'sort_by' 2 %}"
+               class="btn {% if sort_by == '2' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Publisher</a>
+            <a href="?{% url_replace request 'sort_by' 3 %}"
+               class="btn {% if sort_by == '3' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Most
+              Issued</a>
+            <a href="?{% url_replace request 'sort_by' 4 %}"
+               class="btn {% if sort_by == '4' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Most
+              Popular</a>
+          </div>
           <table class="table table-striped">
             <thead>
             <tr>
