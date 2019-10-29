@@ -2,6 +2,9 @@
 {% load static %}
 {% load documents_utils %}
 {% block title %}Document List{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/rateit.css' %}">
+{% endblock %}
 {% block content %}
   <div class="container">
     <div class="row mt-5">
@@ -80,6 +83,7 @@
               <th scope="col">#</th>
               <th scope="col">Title</th>
               <th scope="col">Status</th>
+              <th scope="col">Rating</th>
               <th scope="col">Location</th>
             </tr>
             </thead>
@@ -98,6 +102,10 @@
                   {% elif item.status == item.LOST %}
                     <span class="badge badge-pill bg-danger text-right">Lost</span>
                   {% endif %}
+                </td>
+                <td>
+                  <div class="rateit" data-rateit-value="{{ item.rating }}" data-rateit-ispreset="true"
+                       data-rateit-readonly="true"></div>
                 </td>
                 <td>{{ item.location|default:"---" }}</td>
               </tr>
@@ -156,4 +164,7 @@
       </div>
     {% endif %}
   </div>
+{% endblock %}
+{% block js %}
+  <script src="{% static 'js/jquery.rateit.min.js' %}"></script>
 {% endblock %}
