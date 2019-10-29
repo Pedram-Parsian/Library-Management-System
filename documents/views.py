@@ -31,7 +31,7 @@ class DocumentListView(ListView):
             elif sort_by == '2':
                 sort_by = 'publisher__name'
             elif sort_by == '3':
-                sort_by = '???'  # todo complete this sorting
+                sort_by = '-rating'
             elif sort_by == '4':
                 sort_by = '???'  # todo complete this sorting
         else:

@@ -71,11 +71,10 @@
             <a href="?{% url_replace request 'sort_by' 2 %}"
                class="btn {% if sort_by == '2' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Publisher</a>
             <a href="?{% url_replace request 'sort_by' 3 %}"
-               class="btn {% if sort_by == '3' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Most
-              Issued</a>
+               class="btn {% if sort_by == '3' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Rating</a>
             <a href="?{% url_replace request 'sort_by' 4 %}"
-               class="btn {% if sort_by == '4' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Most
-              Popular</a>
+               class="btn {% if sort_by == '4' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Issue
+              Count</a>
           </div>
           <table class="table table-striped">
             <thead>
