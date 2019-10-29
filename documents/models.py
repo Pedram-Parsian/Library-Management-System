@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 
@@ -15,7 +16,7 @@ class BasePerson(models.Model):
         abstract = True
 
 
-class DocumentComment(models.Model):
+class Review(models.Model):
     APPROVED = 10
     REFUSED = 20
     WAITING = 30
@@ -25,11 +26,11 @@ class DocumentComment(models.Model):
         (WAITING, 'Waiting...')
     )
     document = models.ForeignKey('Document', on_delete=models.PROTECT)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     member = models.ForeignKey(Member, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=True, null=True)
-    text = models.TextField(max_length=600)
+    rating = models.PositiveSmallIntegerField(validators=(MaxValueValidator(5),))
+    text = models.TextField(max_length=600, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_edited = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS_CHOICES, default=WAITING)
@@ -46,10 +47,7 @@ class DocumentComment(models.Model):
             return self.name, None
 
     def __str__(self):
-        name, family = self.get_info()
-        if self.parent:
-            return f'"{name} {family}" on "{self.document.title}" (child comment)'
-        return f'"{name} {family}" on document "{self.document.title}"'
+        return f'"{self.get_info()}" on document "{self.document.title}"'
 
 
 class Document(models.Model):
