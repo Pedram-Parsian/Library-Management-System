@@ -1,6 +1,11 @@
+from django.contrib import messages
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormMixin
+from django.core.exceptions import PermissionDenied
+from django.urls import reverse
 
 from . import models
+from . import forms
 
 
 class DocumentListView(ListView):
@@ -46,16 +51,42 @@ class DocumentListView(ListView):
         return context
 
 
-class DocumentDetailView(DetailView):
+# todo Is there any better solution for submitting form inside DetailView?
+# https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#an-alternative-better-solution
+class DocumentDetailView(FormMixin, DetailView):
+    object: models.Document
     template_name = 'documents/document_detail.html'
     model = models.Document
+    form_class = forms.ReviewForm
+
+    def get_success_url(self):
+        return reverse('documents:detail', kwargs={'slug': self.object.slug})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = models.Review.objects.filter(document=self.get_object(),
-                                                           status=models.Review.APPROVED)
+        context['reviews'] = models.Review.objects.filter(document=self.get_object(),
+                                                          status=models.Review.APPROVED)
         context['navbar'] = 'documents'
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        if not self.request.user.is_authenticated:
+            raise PermissionDenied()
+        review = models.Review(document=self.get_object())
+        review.member = self.request.user.member
+        review.rating = form.cleaned_data.get('rating')
+        review.text = form.cleaned_data.get('text', None)
+        review.save()
+        messages.success(self.request, "Your review has been submitted. It will show up when it's approved!")
+        return super().form_valid(form)
 
 
 class AuthorDetailView(DetailView):
