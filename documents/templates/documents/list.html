@@ -81,6 +81,7 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Title</th>
+              <th scope="col">Publisher</th>
               <th scope="col">Status</th>
               <th scope="col">Rating</th>
               <th scope="col">Location</th>
@@ -91,6 +92,7 @@
               <tr>
                 <th scope="row">{{ item.id }}</th>
                 <td><a href="{% url 'documents:detail' item.slug %}">{{ item.title }}</a></td>
+                <td><a href="{% url 'documents:publisher' item.publisher_id %}">{{ item.publisher.name }}</a></td>
                 <td>
                   {% if item.status == item.AVAILABLE %}
                     <span class="badge badge-pill bg-success text-right">Available</span>
