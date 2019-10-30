@@ -1,4 +1,5 @@
 {% load static %}
+{% load users_utils %}
 <nav
   class="navbar navbar-expand-lg navbar-light bg-secondary {% if navbar == 'home' %} fixed-top navbar-fixed-top{% endif %}">
   <div class="container">
@@ -36,7 +37,8 @@
                aria-haspopup="true" aria-expanded="false" style="box-shadow: none;">
               <div class="media">
                 <img class="align-self-center img-fluid rounded rounded-circle mr-1" style="width: 35px; height: 35px;"
-                     src="{{ request.user.get_avatar }}" alt="{{ request.user.get_info }} Avatar">
+                     src="{% get_avatar_with_size request.user 64 %}"
+                     alt="{{ request.user.get_full_name }} Avatar">
                 <span id="NO_badge_cont" class="NO_visible"><span id="NO_badge" class="NO_hidden"></span></span>
                 <p class="align-self-center p-0 m-0 dropdown-toggle"></p>
               </div>
