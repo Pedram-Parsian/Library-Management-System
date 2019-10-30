@@ -27,27 +27,14 @@ class Review(models.Model):
     )
     document = models.ForeignKey('Document', on_delete=models.PROTECT)
     member = models.ForeignKey(Member, on_delete=models.CASCADE, blank=True, null=True)
-    name = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH, blank=True, null=True)
-    email = models.EmailField(max_length=50, blank=True, null=True)
     rating = models.PositiveSmallIntegerField(validators=(MaxValueValidator(5),))
     text = models.TextField(max_length=600, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_edited = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS_CHOICES, default=WAITING)
 
-    def get_avatar(self):
-        if not self.member_id:
-            return get_gravatar_url(self.email)
-        return self.member.user.get_avatar()
-
-    def get_info(self):
-        if self.member_id:
-            return self.member.user.first_name, self.member.user.last_name
-        else:
-            return self.name, None
-
     def __str__(self):
-        return f'"{self.get_info()}" on document "{self.document.title}"'
+        return f'"{self.member.user.get_full_name()}" on document "{self.document.title}"'
 
 
 class Document(models.Model):
