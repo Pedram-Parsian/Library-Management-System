@@ -31,14 +31,14 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to='user-avatars/', blank=True, null=True)
     REQUIRED_FIELDS = ['first_name', 'last_name', 'identification_code', 'gender', 'email']
 
-    def get_avatar(self):
+    def get_avatar(self, size):
         if self.avatar:
             return self.avatar
-        return self._get_gravatar_url()
+        return self._get_gravatar_url(size)
 
-    def _get_gravatar_url(self):
+    def _get_gravatar_url(self, size):
         from lms.utilities import get_gravatar_url
-        return get_gravatar_url(self.email)
+        return get_gravatar_url(self.email, size)
 
     def __str__(self):
         return f'{self.get_full_name()} ({self.username})'

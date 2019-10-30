@@ -23,9 +23,9 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def get_gravatar_url(email):
+def get_gravatar_url(email, size):
     encoded_email_address = hashlib.md5(email.lower().encode('utf-8')).hexdigest()
-    gravatar_size = urllib.parse.urlencode({'d': 'identicon', 's': '35'})
+    gravatar_size = urllib.parse.urlencode({'d': 'identicon', 's': size})
     return f'https://www.gravatar.com/avatar/{encoded_email_address}?{gravatar_size}'
 
 
