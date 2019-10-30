@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% load humanize %}
+{% load users_utils %}
 {% block title %}Document Detail{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/rateit.css' %}">
+{% endblock %}
 {% block content %}
   <div class="container">
     <div class="row mt-5 pt-3">
@@ -194,7 +198,7 @@
           </div>
         </div>
       </div>
-      {% if comments|length != 0 %}
+      {% if reviews|length != 0 %}
         <div class="col-12 mt-1 mx-lg-4">
           <div class="pb-3 text-center text-lg-left">
             <div class="row mb-4">
@@ -203,27 +207,27 @@
                   <div class="card-body mx-4">
                     <div class="text-center text-md-left">
                       <div class="text-center mt-2 mb-4">
-                        <h3 class="font-weight-bold">Comments
-                          <span class="badge badge-secondary">{{ comments|length }}</span>
+                        <h3 class="font-weight-bold">Reviews
+                          <span class="badge badge-secondary">{{ reviews|length }}</span>
                         </h3>
                       </div>
-                      {% for comment in comments %}
+                      {% for review in reviews %}
                         <div class="row mb-5">
                           <div class="col-sm-2 col-12 mb-3">
-                            <img src="{{ comment.get_avatar }}" alt="{{ comment.get_info.0 }} Avatar">
+                            <img width="96" src="{% get_avatar_with_size review.member.user 128 %}"
+                                 alt="{{ review.member.user.get_full_name }} Avatar"
+                                 class="mx-auto d-block rounded-circle">
                           </div>
                           <div class="col-sm-10 col-12">
                             <h5 class="font-weight-bold mb-0">
-                              {{ comment.get_info.0|capfirst }}{% if comment.get_info.1 %}
-                                {{ comment.get_info.1|capfirst }}{% endif %}
-                              <fieldset class="starability-result" data-rating="{{ comment.vote }}">
-                                Rated: {{ comment.vote }} stars
-                              </fieldset>
+                              {{ review.member.user.get_full_name|capfirst }}
+                              <div class="rateit" data-rateit-value="{{ review.rating }}" data-rateit-ispreset="true"
+                                   data-rateit-readonly="true"></div>
                             </h5>
                             <div class="card-data">
-                              <small class="text-muted mt-0">{{ comment.date_added|date:'Y/m/d' }}</small>
+                              <small class="text-muted mt-0">{{ review.date_added|date:'Y/m/d' }}</small>
                             </div>
-                            <p>{{ comment.text }}</p>
+                            {% if review.text %}<p>{{ review.text }}</p>{% endif %}
                           </div>
                         </div>
                       {% endfor %}
@@ -241,79 +245,41 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body mx-4">
-                  <h3 class="text-center pt-5 font-weight-bold">Leave a comment</h3>
-                  <form method="POST"> {% csrf_token %}
-                    {% if request.user.is_authenticated %}
-                      <p class="text-center">Logged in as <a href="">{{ request.user.first_name }}</a>.
-                        <a href="">Logout?</a></p>
-                    {% else %}
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="name">Your name</label>
-                          <input id="name" type="text"
-                                 class="form-control {% if form.name.errors %}is-invalid{% endif %}"
-                                 name="name" value="{{ form.name.value|default:"" }}">
-                          {% if form.name.errors %}
-                            <div class="invalid-feedback">
-                              {{ form.name.errors }}
-                            </div>
-                          {% endif %}
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="email">Your email</label>
-                          <input id="email" type="email"
-                                 class="form-control {% if form.email.errors %}is-invalid{% endif %}"
-                                 name="email" value="{{ form.email.value|default:"" }}">
-                          {% if form.email.errors %}
-                            <div class="invalid-feedback">
-                              {{ form.email.errors }}
-                            </div>
-                          {% endif %}
+                  <h3 class="text-center font-weight-bold">Write a review</h3>
+                  {% if request.user.is_authenticated %}
+                    <form method="POST"> {% csrf_token %}
+                      <p class="text-center">Logged in as <a
+                        href="{% url 'users:profile' %}">{{ request.user.get_full_name }}</a>.
+                        <a href="{% url 'users:logout' %}">Logout?</a></p>
+                      <div class="form-group">
+                        <label for="vote" class="font-weight-bold mr-2">Vote</label>
+                        <input type="range" name="rating"
+                               value="{{ form.rating.value|default_if_none:0 }}" step="1"
+                               id="vote">
+                        <div class="rateit" data-rateit-backingfld="#vote" data-rateit-resetable="false"
+                             data-rateit-ispreset="true"
+                             data-rateit-min="0" data-rateit-max="5">
                         </div>
                       </div>
-                    {% endif %}
-                    <div class="form-group">
-                      <label for="vote">Your vote</label>
-                      <!-- todo post comment vote not working!                     -->
-                      <fieldset class="starability-growRotate">
-                        <input type="radio" id="no-rate-growRotate" class="input-no-rate" name="rating" value="0"
-                               checked="" aria-label="No rating.">
-                        <input type="radio" id="growRotate-rate1" name="rating" value="1">
-                        <label for="growRotate-rate1" title="Terrible">1 star</label>
-                        <input type="radio" id="growRotate-rate2" name="rating" value="2">
-                        <label for="growRotate-rate2" title="Not good">2 stars</label>
-                        <input type="radio" id="growRotate-rate3" name="rating" value="3">
-                        <label for="growRotate-rate3" title="Average">3 stars</label>
-                        <input type="radio" id="growRotate-rate4" name="rating" value="4">
-                        <label for="growRotate-rate4" title="Very good">4 stars</label>
-                        <input type="radio" id="growRotate-rate5" name="rating" value="5">
-                        <label for="growRotate-rate5" title="Amazing">5 stars</label>
-                        <span class="starability-focus-ring"></span>
-                      </fieldset>
-                      <!--                      <input min="1" max="5" type="number" name="vote" id="vote"-->
-                      <!--                             class="form-control {% if form.vote.errors %}
-                        is-invalid{% endif %}">{{form.text.value|default:""}}</input>-->
-                      {% if form.vote.errors %}
-                        <div class="invalid-feedback">
-                          {{ form.vote.errors }}
-                        </div>
-                      {% endif %}
-                    </div>
-                    <div class="form-group">
-                      <label for="message">Your comment</label>
+                      <div class="form-group mt-1">
                       <textarea rows='3' name="text" id="text"
                                 class="form-control {% if form.text.errors %}is-invalid{% endif %}"
-                                rows="3">{{ form.text.value|default:"" }}</textarea>
-                      {% if form.text.errors %}
-                        <div class="invalid-feedback">
-                          {{ form.text.errors }}
-                        </div>
-                      {% endif %}
-                    </div>
-                    <div class="text-center mt-4">
-                      <input type="submit" class="btn btn-block btn-outline-primary">
-                    </div>
-                  </form>
+                                rows="3" placeholder="Review (optional)">{{ form.text.value|default:"" }}</textarea>
+                        {% if form.text.errors %}
+                          <div class="invalid-feedback">
+                            {{ form.text.errors }}
+                          </div>
+                        {% endif %}
+                      </div>
+                      <div class="text-center mt-4">
+                        <input type="submit" class="btn btn-block btn-outline-primary">
+                      </div>
+                    </form>
+                  {% else %}
+                    <p class="text-center">Please <a
+                      href="{% url 'users:login' %}?next={% url 'documents:detail' object.slug %}">login</a> to write a
+                      review.</p>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -332,4 +298,5 @@
           });
       });
   </script>
+  <script src="{% static 'js/jquery.rateit.min.js' %}"></script>
 {% endblock %}
