@@ -1,9 +1,11 @@
 {% load static %}
+{% load users_utils %}
 <div class="col-lg-3 col-12 mt-1">
   <div class="card mt-0">
     <div class="card-body text-center">
       <div class="text-center">
-        <img src="{{ user.get_avatar }}" alt="{{ user.first_name }} {{ user.last_name }} Profile Picture">
+        <img class="rounded-circle" src="{% get_avatar_with_size user 128 %}"
+             alt="{{ user.get_full_name }} Profile Picture">
         <br>
         <a class="small text-muted" href="">Change Image</a>
         <br>
