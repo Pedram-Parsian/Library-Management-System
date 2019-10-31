@@ -67,17 +67,17 @@ class ProfileView(LoginRequiredMixin, FormView):
     template_name = 'users/profile/profile.html'
 
 
-class ProfileCommentsView(LoginRequiredMixin, ListView):
+class ProfileReviewsView(LoginRequiredMixin, ListView):
     model = Review
     login_url = reverse_lazy('users:login')
-    template_name = 'users/profile/comments.html'
+    template_name = 'users/profile/reviews.html'
 
     def get_queryset(self):
-        return Review.objects.filter(user=self.request.user)
+        return Review.objects.filter(member=self.request.user.member).order_by('-date_added')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sidebar'] = 'comments'
+        context['sidebar'] = 'reviews'
         return context
 
 
@@ -111,9 +111,9 @@ class ProfileIssuesView(LoginRequiredMixin, ListView):
         return context
 
 
-class ProfileCommentDelete(LoginRequiredMixin, DeleteView):
+class ProfileReviewDeleteView(LoginRequiredMixin, DeleteView):
     model = Review
-    success_url = reverse_lazy("comments")
+    success_url = reverse_lazy("users:reviews")
 
     # todo oh... is it the right way?! or shall we send a post request?
     def get(self, request, *args, **kwargs):
