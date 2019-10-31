@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'accounting.apps.AccountingConfig',
     'reports.apps.ReportsConfig',
+    'ticketing.apps.TicketingConfig',
 ]
 
 MIDDLEWARE = [
