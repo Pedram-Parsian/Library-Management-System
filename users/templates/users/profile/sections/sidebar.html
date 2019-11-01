@@ -45,6 +45,11 @@
             <i class="far fa-comment mr-5"></i>Reviews
           </li>
         </a>
+        <a href="{% url 'users:tickets' %}" class="my-1">
+          <li class="list-group-item list-group-item-light {% if sidebar == 'tickets' %}active{% endif %}">
+            <i class="far fa-comment mr-5"></i>Tickets
+          </li>
+        </a>
         <a href="" class="my-1">
           <li class="list-group-item list-group-item-light {% if sidebar == 'addresses' %}active{% endif %}">
             <i class="fas fa-map-marker-alt mr-5"></i>Addresses

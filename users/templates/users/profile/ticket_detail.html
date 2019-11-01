@@ -1,0 +1,54 @@
+{% extends "users/profile/profile_base.html" %}
+{% load static %}
+{% block profile %}
+  <div class="card card-body  mb-5">
+    <div class="card-header">
+     <span class="h2 font-weight-bold mt-3">
+        {% if ticket.status == 10 %}
+          <span class="badge badge-pill bg-success text-right">Open</span>
+        {% elif ticket.status == 20 %}
+          <span class="badge badge-pill bg-danger text-right">Closed</span>
+        {% endif %}
+       {{ object.subject }}
+    </span>
+      <br>
+      <small>Priority: {{ ticket.get_priority_display }}</small>
+      <br>
+      <small>Department: {{ ticket.get_department_display }}</small>
+    </div>
+    <div class="row mb-4">
+      {% for reply in replies %}
+        <div class="col-md-12 text-left mt-3">
+          <div class="card">
+            <div class="card-header">
+              <span class="font-weight-bolder font-italic">{{ reply.user.get_full_name }} </span><span
+              class="small text-muted">replied on {{ reply.timestamp|date:"l Y/n/j - G:i" }}</span>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                {{ reply.text|safe|linebreaks }}
+              </p>
+              {% if reply.attachment_set.count > 0 %}
+                <hr>
+                {% for attachment in reply.attachment_set.all %}
+                  <a href="{{ attachment.file.url }}" target="_blank"
+                     class="small text-muted">{{ attachment.get_file_name }}</a>
+                  {% if not forloop.last %}<br>{% endif %}
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      <div class="col-md-12 text-left mt-3">
+        <div class="card">
+          <div class="card-header">
+            Add a reply
+          </div>
+          <div class="card-body">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

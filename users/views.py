@@ -1,19 +1,20 @@
 from django.shortcuts import redirect, render
 from django.views.generic.list import ListView
-from django.views.generic import View, TemplateView
+from django.views.generic import View, TemplateView, DetailView
 from django.views.generic.edit import (
     FormView,
     DeleteView,
-)
+    FormMixin)
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.conf import settings
 from django.http import HttpResponse
 
 from circulation.models import Reserve, Issue
 from documents.models import Review
+from ticketing.models import Ticket, Reply
 from . import forms
 from . import models
 
@@ -78,6 +79,31 @@ class ProfileReviewsView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sidebar'] = 'reviews'
+        return context
+
+
+class ProfileTicketsView(LoginRequiredMixin, ListView):
+    model = Ticket
+    login_url = reverse_lazy('users:login')
+    template_name = 'users/profile/tickets.html'
+
+    def get_queryset(self):
+        return Ticket.objects.filter(member=self.request.user.member).order_by('-date_opened')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sidebar'] = 'tickets'
+        return context
+
+
+class ProfileTicketView(DetailView):
+    template_name = 'users/profile/ticket_detail.html'
+    model = Ticket
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['replies'] = Reply.objects.filter(ticket_id=self.object.pk)
+        context['navbar'] = 'tickets'
         return context
 
 

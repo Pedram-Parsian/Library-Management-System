@@ -1,3 +1,5 @@
+from os.path import basename
+
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.conf import settings
@@ -48,11 +50,14 @@ class Ticket(models.Model):
 
 
 class Reply(models.Model):
+    class Meta:
+        verbose_name_plural = 'Replies'
+
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     text = models.TextField(max_length=1000)
-    rating = models.PositiveSmallIntegerField(validators=(MaxValueValidator(5),))
+    rating = models.PositiveSmallIntegerField(validators=(MaxValueValidator(5),), blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.get_full_name()} replied to [{self.ticket.get_priority_display()}] <{self.ticket.subject}>'
@@ -62,6 +67,9 @@ class Attachment(models.Model):
     reply = models.ForeignKey(Reply, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to='ticket_attachments/')
+
+    def get_file_name(self):
+        return basename(self.file.name)
 
     def __str__(self):
         return f'Attachment for <{self.reply}>'
