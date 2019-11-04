@@ -18,3 +18,8 @@ def document_pre_save_receiver(sender, instance, *args, **kwargs):
 @receiver(post_save, sender=models.Review)
 def review_post_save_receiver(sender, instance, **kwargs):
     Document.recalculate_rating(instance.document_id)
+
+
+@receiver(post_delete, sender=models.Review)
+def review_post_delete_receiver(sender, instance, **kwargs):
+    Document.recalculate_rating(instance.document_id)
