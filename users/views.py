@@ -15,6 +15,7 @@ from django.http import HttpResponse
 from circulation.models import Reserve, Issue
 from documents.models import Review
 from ticketing.models import Ticket, Reply
+from ticketing.forms import TicketForm
 from . import forms
 from . import models
 
@@ -96,6 +97,35 @@ class ProfileTicketsView(LoginRequiredMixin, ListView):
         return context
 
 
+class ProfileCreateTicketView(FormView):
+    object: Ticket
+    template_name = 'users/profile/create_ticket.html'
+    form_class = TicketForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sidebar'] = 'tickets'
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('users:ticket_detail', kwargs={'pk': self.object.id})
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.member = self.request.user.member
+        self.object.status = Ticket.OPEN
+        self.object.save()
+
+        # Now that we have the Ticket object saved,
+        # we can create and save a reply object:
+        reply = Reply(ticket_id=self.object.id)
+        reply.user_id = self.request.user.id
+        reply.text = form.cleaned_data.get('text')
+        reply.save()
+
+        return super().form_valid(form)
+
+
 class ProfileTicketView(DetailView):
     template_name = 'users/profile/ticket_detail.html'
     model = Ticket
@@ -103,7 +133,7 @@ class ProfileTicketView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['replies'] = Reply.objects.filter(ticket_id=self.object.pk)
-        context['navbar'] = 'tickets'
+        context['sidebar'] = 'tickets'
         return context
 
 

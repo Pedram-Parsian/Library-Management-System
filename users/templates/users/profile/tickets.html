@@ -7,6 +7,9 @@
     </h2>
     <hr>
     <div class="row mb-4">
+      <div class="col-md-12 text-left mt-3">
+        <a href="{% url 'users:ticket_create_view' %}" class="btn btn-block btn-outline-primary">Issue new ticket</a>
+      </div>
       {% for ticket in object_list %}
         <div class="col-md-12 text-left mt-3">
           <div class="card">
@@ -31,25 +34,6 @@
           <h5>Looks empty!</h5>
         </div>
       {% endfor %}
-      <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12 text-left mt-3">
-        <button class="btn btn-block btn-outline-primary create-ticket" type="button">Issue a new ticket</button>
-      </div>
     </div>
   </div>
-{% endblock %}
-{% block js %}
-  <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
-  <script type="text/javascript">
-      $(document).ready(function () {
-          $(".create-ticket").modalForm({
-              formURL: "{% url 'ticketing:create_ticket' %}"
-          });
-      });
-  </script>
 {% endblock %}

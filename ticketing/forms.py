@@ -1,9 +1,8 @@
 from django import forms
-from bootstrap_modal_forms.forms import BSModalForm
 from .models import Ticket
 
 
-class TicketCreateForm(BSModalForm):
+class TicketForm(forms.ModelForm):
     text = forms.CharField(widget=forms.Textarea())
 
     class Meta:
