@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-Pedram Parsian - Profile
+  Your Profile
 {% endblock %}
 {% block content %}
-<div class="container-fluid">
+  <div class="container-fluid">
     <div class="container">
-        <div class="row mt-5 pt-3">
-            {% include 'users/profile/sections/sidebar.html' %}
-            <div class="col-xl-8 col-md-12">
-                <div class="row mt-2 mb-5 pb-3 mx-2">
-                    {% block profile %}
-                    {% endblock %}
-                </div>
-            </div>
+      <div class="row mt-5 pt-3">
+        {% include 'users/profile/sections/sidebar.html' %}
+        <div class="col-xl-8 col-md-12">
+          <div class="row mt-2 mb-5 pb-3 mx-2">
+            {% block profile %}
+            {% endblock %}
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
