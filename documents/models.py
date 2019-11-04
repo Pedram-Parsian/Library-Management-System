@@ -90,6 +90,14 @@ class Document(models.Model):
         """
         ...
 
+    @staticmethod
+    def recalculate_rating(document_id):
+        document_reviews = Review.objects.filter(document_id=document_id)
+        document_average_rating = sum(document_reviews.values_list('rating', flat=True)) / document_reviews.count()
+        document = Document.objects.get(id=document_id)
+        document.rating = document_average_rating
+        document.save()
+
     def __str__(self):
         return f'{self.title} ({self.call_no})'
 

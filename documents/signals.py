@@ -1,5 +1,7 @@
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
+
+from documents.models import Document
 from lms.utilities import unique_slug_generator
 from . import models
 
@@ -13,3 +15,6 @@ def document_pre_save_receiver(sender, instance, *args, **kwargs):
         ...
 
 
+@receiver(post_save, sender=models.Review)
+def review_post_save_receiver(sender, instance, **kwargs):
+    Document.recalculate_rating(instance.document_id)
