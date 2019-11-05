@@ -1,0 +1,28 @@
+{% extends "users/profile/profile_base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block profile %}
+  <div class="card card-body  mb-5">
+    <div class="card-header">
+      Create Ticket
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-12 text-left mt-3">
+        <form method="POST" action="{% url 'users:ticket_create_view' %}"> {% csrf_token %}
+          {% for field in form %}
+            <div class="form-group">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {% render_field field class="form-control" placeholder=field.label %}
+              <div class="{% if field.errors %} invalid{% endif %}">
+                {% for error in field.errors %}
+                  <p class="help-block">{{ error }}</p>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+          <button type="submit" class="submit-btn btn btn-primary mt-3 btn-block">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
