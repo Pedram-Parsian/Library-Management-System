@@ -15,7 +15,7 @@ from django.http import HttpResponse
 from circulation.models import Reserve, Issue
 from documents.models import Review
 from ticketing.models import Ticket, Reply
-from ticketing.forms import TicketForm
+from ticketing.forms import TicketForm, ReplyForm
 from . import forms
 from . import models
 
@@ -126,15 +126,37 @@ class ProfileCreateTicketView(FormView):
         return super().form_valid(form)
 
 
-class ProfileTicketView(DetailView):
+# todo Is there any better solution for submitting form inside DetailView?
+# https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#an-alternative-better-solution
+class ProfileTicketView(LoginRequiredMixin, FormMixin, DetailView):
+    object: Reply
     template_name = 'users/profile/ticket_detail.html'
     model = Ticket
+    form_class = ReplyForm
+
+    def get_success_url(self):
+        return reverse_lazy('users:ticket_detail', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['replies'] = Reply.objects.filter(ticket_id=self.object.pk)
         context['sidebar'] = 'tickets'
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.ticket = self.get_object()
+        form.instance.user = self.request.user
+        form.save()
+        messages.success(self.request, "Your reply has been submitted. Thanks!")
+        return super().form_valid(form)
 
 
 class ProfileReservesView(LoginRequiredMixin, ListView):
