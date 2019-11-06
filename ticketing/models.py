@@ -3,7 +3,6 @@ from os.path import basename
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.conf import settings
-
 from users.models import Member, User
 
 
