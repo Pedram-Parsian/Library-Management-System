@@ -120,9 +120,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 LOGIN_REDIRECT_URL = 'home'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'users:login'
 
-LOGOUT_URL = 'logout'
+LOGOUT_URL = 'users:logout'
 
 CHARFIELD_MAX_LENGTH = 250
 
@@ -138,3 +138,15 @@ RECAPTCHA_PUBLIC_KEY = _RECAPTCHA_PUBLIC_KEY
 RECAPTCHA_PRIVATE_KEY = _RECAPTCHA_PRIVATE_KEY
 
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'
+
+# settings for ticket attachments:
+
+MAX_ATTACHMENTS = 5
+
+MAX_ATTACHMENT_SIZE = 5e+6  # in bytes
+
+VALID_ATTACHMENT_EXTENSIONS = {
+    '.png': 'image/png',
+    '.jpeg': 'image/jpeg',
+    '.pdf': 'application/pdf',
+}
