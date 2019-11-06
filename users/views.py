@@ -8,13 +8,13 @@ from django.views.generic.edit import (
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse
 
 from circulation.models import Reserve, Issue
 from documents.models import Review
-from ticketing.models import Ticket, Reply
+from ticketing.models import Ticket, Reply, Attachment
 from ticketing.forms import TicketForm, ReplyForm
 from . import forms
 from . import models
@@ -141,6 +141,9 @@ class ProfileTicketView(LoginRequiredMixin, FormMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['replies'] = Reply.objects.filter(ticket_id=self.object.pk)
         context['sidebar'] = 'tickets'
+        context['MAX_FILES_COUNT'] = settings.MAX_ATTACHMENTS
+        import humanize
+        context['MAX_FILE_SIZE'] = humanize.naturalsize(settings.MAX_ATTACHMENT_SIZE, format='%.0f')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -151,12 +154,30 @@ class ProfileTicketView(LoginRequiredMixin, FormMixin, DetailView):
         else:
             return self.form_invalid(form)
 
+    def get_form_kwargs(self):
+        # passing request to form so that we can validate the total uploaded files count.
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
     def form_valid(self, form):
+        # first, we complete and save the reply object
         form.instance.ticket = self.get_object()
         form.instance.user = self.request.user
-        form.save()
+        reply = form.save()
+
+        # now we can save attachments
+        for i, file in enumerate(self.request.FILES.getlist('attachments')):
+            attachment = Attachment(reply=reply)
+            attachment.file = file
+            attachment.save()
+
         messages.success(self.request, "Your reply has been submitted. Thanks!")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Something went wrong! Please correct the form and re-submit it.')
+        return super().form_invalid(form)
 
 
 class ProfileReservesView(LoginRequiredMixin, ListView):
