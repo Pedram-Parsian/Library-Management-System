@@ -105,10 +105,19 @@ class ProfileCreateTicketView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sidebar'] = 'tickets'
+        context['MAX_FILES_COUNT'] = settings.MAX_ATTACHMENTS
+        import humanize
+        context['MAX_FILE_SIZE'] = humanize.naturalsize(settings.MAX_ATTACHMENT_SIZE, format='%.0f')
         return context
 
     def get_success_url(self):
         return reverse_lazy('users:ticket_detail', kwargs={'pk': self.object.id})
+
+    def get_form_kwargs(self):
+        # passing request to form so that we can validate the total uploaded files count.
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -123,7 +132,17 @@ class ProfileCreateTicketView(FormView):
         reply.text = form.cleaned_data.get('text')
         reply.save()
 
+        # then we can save attachments
+        for i, file in enumerate(self.request.FILES.getlist('attachments')):
+            attachment = Attachment(reply=reply)
+            attachment.file = file
+            attachment.save()
+
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Something went wrong! Please correct the form and re-submit it.')
+        return super().form_invalid(form)
 
 
 # todo Is there any better solution for submitting form inside DetailView?
