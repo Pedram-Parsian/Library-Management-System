@@ -16,10 +16,14 @@ def document_pre_save_receiver(sender, instance, *args, **kwargs):
 
 
 @receiver(post_save, sender=models.Review)
-def review_post_save_receiver(sender, instance, **kwargs):
-    Document.recalculate_rating(instance.document_id)
+def review_post_save_receiver(sender, instance: models.Review, **kwargs):
+    # re-calculate the document rating only if the review was APPROVED
+    if instance.status == models.Review.APPROVED:
+        Document.recalculate_rating(instance.document_id)
 
 
 @receiver(post_delete, sender=models.Review)
 def review_post_delete_receiver(sender, instance, **kwargs):
-    Document.recalculate_rating(instance.document_id)
+    # re-calculate the document rating only if the review was APPROVED
+    if instance.status == models.Review.APPROVED:
+        Document.recalculate_rating(instance.document_id)
