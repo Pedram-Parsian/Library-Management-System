@@ -21,7 +21,7 @@
       {% for reply in replies %}
         <div class="col-md-12 text-left mt-3">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header{% if reply.user != request.user %} bg-info{% endif %}">
               <span class="font-weight-bolder font-italic">{{ reply.user.get_full_name }} </span><span
               class="small text-muted">replied on {{ reply.timestamp|date:"l Y/n/j - G:i" }}</span>
             </div>
