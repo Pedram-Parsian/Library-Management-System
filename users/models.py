@@ -56,6 +56,7 @@ class Member(models.Model):
 class Group(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
+    description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
 
     @property
     def member_count(self):
