@@ -46,8 +46,7 @@ class User(AbstractUser):
 
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    # todo member should be able to belong to multiple groups...
-    group = models.ForeignKey('Group', on_delete=models.PROTECT, null=True, blank=True)
+    groups = models.ManyToManyField('Group', blank=True)
     membership = models.ForeignKey('Membership', on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
