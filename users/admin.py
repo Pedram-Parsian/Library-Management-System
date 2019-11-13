@@ -1,10 +1,32 @@
 from django.contrib import admin
-
 from . import models
 
-admin.site.register(models.User)
-admin.site.register(models.Member)
-admin.site.register(models.Membership)
-admin.site.register(models.Notification)
-admin.site.register(models.EmailActivation)
-admin.site.register(models.Group)
+
+@admin.register(models.User)
+class UserAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.Member)
+class MemberAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.Membership)
+class MembershipAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.EmailActivation)
+class EmailActivationAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.Group)
+class GroupAdmin(admin.ModelAdmin):
+    ...
