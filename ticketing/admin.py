@@ -1,6 +1,17 @@
 from django.contrib import admin
 from . import models
 
-admin.site.register(models.Ticket)
-admin.site.register(models.Reply)
-admin.site.register(models.Attachment)
+
+@admin.register(models.Attachment)
+class AttachmentAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.Reply)
+class ReplyAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.Ticket)
+class TicketAdmin(admin.ModelAdmin):
+    ...
