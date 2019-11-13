@@ -2,6 +2,7 @@ from django.contrib import admin
 from . import models
 
 
+@admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'slug']
 
@@ -9,7 +10,16 @@ class PostAdmin(admin.ModelAdmin):
         model = models.Post
 
 
-admin.site.register(models.Post, PostAdmin)
-admin.site.register(models.PostCategory)
-admin.site.register(models.PostTag)
-admin.site.register(models.PostComment)
+@admin.register(models.PostCategory)
+class PostCategoryAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.PostTag)
+class PostTagAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(models.PostComment)
+class PostCommentAdmin(admin.ModelAdmin):
+    ...
