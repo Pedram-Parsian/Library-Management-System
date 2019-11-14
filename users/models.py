@@ -85,9 +85,25 @@ class Membership(models.Model):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    INFO = 10
+    WARNING = 20
+    ALERT = 30
+    CRITICAL = 40
+    NOTIFICATION_SEVERITIES = (
+        (INFO, 'Info'),
+        (WARNING, 'Warning'),
+        (ALERT, 'Alert'),
+        (CRITICAL, 'Critical'),
+    )
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     text = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH)
+    # We're using FK to user not member, because staffs may need to be notified as well:
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+    sender = models.ForeignKey(User, on_delete=models.PROTECT, related_name='sender_set')
+    severity = models.IntegerField(choices=NOTIFICATION_SEVERITIES, default=INFO)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return f'<{self.title}> {self.text} for <{self.user}>'
