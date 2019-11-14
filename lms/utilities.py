@@ -19,6 +19,20 @@ def unique_slug_generator(instance, new_slug=None):
     return slug
 
 
+def unique_number_generator(instance, new_num=None):
+    if new_num is not None:
+        num = new_num
+    else:
+        num = random_string_generator(size=10, chars=string.digits)
+
+    class_ = instance.__class__
+    qs_exists = class_.objects.filter(reference_num=num).exists()
+    if qs_exists:
+        new_slug = random_string_generator(size=10, chars=string.digits)
+        return unique_slug_generator(instance, new_slug=new_slug)
+    return num
+
+
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
