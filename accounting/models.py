@@ -26,19 +26,21 @@ class BillItem(models.Model):
 class Payment(models.Model):
     CASH = 10
     CREDIT = 20
-    BALANCE = 30
-
+    CARD_TO_CARD = 30
+    BALANCE = 40
     PAYMENT_CHOICES = (
         (CASH, 'Cash'),
         (CREDIT, 'Credit Card'),
+        (CARD_TO_CARD, 'Card to Card'),
         (BALANCE, 'Balance'),
     )
-
-    # user = models.ForeignKey()
     payment_type = models.IntegerField(choices=PAYMENT_CHOICES)
-    amount = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
+
+    @property
+    def get_total(self):
+        return self.bill.billitem_set.annotate(sum('price'))
 
     def __str__(self):
         return f'{self.amount} Rial on {self.timestamp}'
