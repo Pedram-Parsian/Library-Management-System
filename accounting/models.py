@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Sum
 
 from users.models import Member
 
@@ -34,13 +35,15 @@ class Payment(models.Model):
         (CARD_TO_CARD, 'Card to Card'),
         (BALANCE, 'Balance'),
     )
+    reference_num = models.CharField(max_length=20, null=True, blank=True)
     payment_type = models.IntegerField(choices=PAYMENT_CHOICES)
     timestamp = models.DateTimeField(auto_now_add=True)
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
+    successful = models.BooleanField(default=False)
 
     @property
     def get_total(self):
-        return self.bill.billitem_set.annotate(sum('price'))
+        return self.bill.billitem_set.all().aggregate(Sum('price'))['price__sum']
 
     def __str__(self):
-        return f'{self.amount} Rial on {self.timestamp}'
+        return f'{self.get_total} Rial on {self.timestamp}'
