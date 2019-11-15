@@ -1,4 +1,3 @@
-humanize
 beautifulsoup4==4.8.0
 cairocffi==1.1.0
 CairoSVG==2.4.2
@@ -9,9 +8,11 @@ defusedxml==0.6.0
 diff-match-patch==20181111
 Django==2.2.5
 django-bootstrap-modal-forms==1.4.3
+django-ckeditor==5.8.0
 django-debug-toolbar==2.0
 django-filter==2.2.0
 django-import-export==1.2.0
+django-js-asset==1.2.2
 django-livereload-server==0.3.2
 django-recaptcha==2.0.5
 django-widget-tweaks==1.4.5
@@ -19,6 +20,7 @@ djangorestframework==3.10.3
 et-xmlfile==1.0.1
 graphviz==0.13
 html5lib==1.0.1
+humanize==0.5.1
 jdcal==1.4.1
 Khayyam==3.0.17
 Markdown==3.1.1
