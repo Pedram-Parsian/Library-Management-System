@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 from lms.utilities import get_gravatar_url
 from users.models import Member
@@ -93,6 +94,9 @@ class Document(models.Model):
         find the number of the same document in the library
         """
         ...
+
+    def get_absolute_url(self):
+        return reverse('documents:detail', args=[self.slug])
 
     @staticmethod
     def recalculate_rating(document_id):
