@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'import_export',
     'captcha',
     'bootstrap_modal_forms',
+    'ckeditor',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'documents.apps.DocumentsConfig',
@@ -150,3 +151,5 @@ VALID_ATTACHMENT_EXTENSIONS = {
     '.jpeg': 'image/jpeg',
     '.pdf': 'application/pdf',
 }
+
+DEFAULT_POST_NEW_DAYS = 7
