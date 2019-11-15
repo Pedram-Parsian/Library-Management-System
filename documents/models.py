@@ -83,6 +83,7 @@ class Document(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places=1,
                                  validators=(MinValueValidator(0), MaxValueValidator(5)))
     description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
+    summary = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
 
     # todo generate call_no based on row (location) + id + hash + ...
     # todo generate slug
