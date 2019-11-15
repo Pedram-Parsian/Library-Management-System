@@ -1,177 +1,184 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-Blog Page - Detail
+  Blog Page - Detail
 {% endblock %}
 {% block content %}
-<div class="container">
-  <div class="row my-5">
-    <div class="col-lg-8 col-12 mx-lg-4">
-      <div class="pb-5 text-lg-left">
-        <div class="row mb-4">
-          <div class="col-md-12">
-            <div class="card">
-              <img src="{{ post.image.url }}" class="img-fluid" alt="{{post.title}} Image">
-              <div class="card-body">
-                <h4 class="card-title">
-                  <strong>{{ post.title }}</strong>
-                </h4>
-                <hr>
-                <div class="mb-3 mt-4 mx-4">
-                  {{post.body|safe|linebreaks}}
-                </div>
-                <hr>
-                {% for tag in post.tags.all %}
-                <a href="{% url 'blog:blog_tag' tag.slug %}" class="badge badge-secondary mx-2">
-                  <i class="fas fa-tag"></i>
-                  {{tag.title}}
-                </a>
-                {% endfor %}
-                <hr>
-                <div class="text-center">
-                  <h6>Like the content?</h6>
-                  <a href="{% url 'blog:like_post' post.id %}" class="btn btn-rounded btn-outline-success">
-                    <i class="fas fa-thumbs-up mr-2"></i>
-                    Give a thumbs up
-                  </a>
-                </div>
-                <h6 class="text-center my-3">or</h6>
-                <div class="row mb-4">
-                  <div class="col-md-12 text-center">
-                    <a target="_blank"
-                       href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{{ post.get_absolute_url }}"
-                       class="btn btn-sm btn-outline-primary">
-                      <i class="fab fa-facebook-f left"></i> Facebook
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-lg-8 col-12 mx-lg-4">
+        <div class="pb-5 text-lg-left">
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="card">
+                <img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }} Image">
+                <div class="card-body">
+                  <h4 class="card-title">
+                    <strong>{{ post.title }}</strong>
+                  </h4>
+                  <hr>
+                  <div class="mb-3 mt-4 mx-4">
+                    {{ post.body|safe|linebreaks }}
+                  </div>
+                  <hr>
+                  {% for tag in post.tags.all %}
+                    <a href="{% url 'blog:blog_tag' tag.slug %}" class="badge badge-secondary mx-2">
+                      <i class="fas fa-tag"></i>
+                      {{ tag.title }}
                     </a>
-                    <a target="_blank"
-                       href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}{{ post.get_absolute_url }}&title={{post.title}}&summary=This is the article summary!&source=http://pedram-parsian.com"
-                       class="btn btn-sm btn-outline-primary">
-                      <i class="fab fa-linkedin-in left"></i> Linked In
-                    </a>
-                    <a target="_blank"
-                       href="http://twitter.com/share?text={{post.title}}&url={{ request.build_absolute_uri }}{{ post.get_absolute_url }}&hashtags={{ post.get_tags }}"
-                       class="btn btn-sm btn-outline-primary">
-                      <i class="fab fa-twitter left"></i> Twitter
-                    </a>
-                    <a target="_blank"
-                       href="https://telegram.me/share/url?url={{ request.build_absolute_uri }}{{ post.get_absolute_url }}"
-                       class="btn btn-sm btn-outline-primary">
-                      <i class="fab fa-telegram left"></i> Telegram
+                  {% endfor %}
+                  <hr>
+                  <div class="text-center">
+                    <h6>Like the content?</h6>
+                    <a href="{% url 'blog:like_post' post.id %}" class="btn btn-rounded btn-outline-success">
+                      <i class="fas fa-thumbs-up mr-2"></i>
+                      Give a thumbs up
                     </a>
                   </div>
-                </div>
-              </div>
-              <div class="container-fluid px-5" style="background-color: #d7dadf">
-                <h5 class="font-weight-bold mt-5">
-                  <strong>YOU MIGHT ALSO LIKE</strong>
-                </h5>
-                <hr class="red title-hr">
-                <div class="row mb-4">
-                  {% for related_post in related_posts %}
-                  <div class="col-lg-4 my-3">
-                    <div class="card h-100">
-                      <img src="{{ related_post.image.url }}" class="card-img-top" alt="sample image">
-                      <div class="card-body">
-                        <h4 class="card-title font-weight-bold">
-                          {{related_post.title}}
-                        </h4>
-                        <small class="mb-1">
-                          {{related_post.date_published|date:"F Y"}}
-                        </small>
-                      </div>
-                      <div class="card-footer">
-                        <a href="{% url 'blog:post' related_post.slug %}" class="btn btn-info btn-block font-weight-bold">Read Post</a>
-                      </div>
+                  <h6 class="text-center my-3">or</h6>
+                  <div class="row mb-4">
+                    <div class="col-md-12 text-center">
+                      <a target="_blank"
+                         href="https://www.facebook.com/sharer/sharer.php?u=
+                           {{ request.build_absolute_uri }}{{ post.get_absolute_url }}"
+                         class="btn btn-sm btn-outline-primary">
+                        <i class="fab fa-facebook-f left"></i> Facebook
+                      </a>
+                      <a target="_blank"
+                         href="https://www.linkedin.com/shareArticle?mini=true&url=
+                           {{ request.build_absolute_uri }}{{ post.get_absolute_url }}&title={{ post.title }}&summary=This is the article summary!&source=http://pedram-parsian.com"
+                         class="btn btn-sm btn-outline-primary">
+                        <i class="fab fa-linkedin-in left"></i> Linked In
+                      </a>
+                      <a target="_blank"
+                         href="http://twitter.com/share?text={{ post.title }}&url=
+                           {{ request.build_absolute_uri }}{{ post.get_absolute_url }}&hashtags={{ post.get_tags }}"
+                         class="btn btn-sm btn-outline-primary">
+                        <i class="fab fa-twitter left"></i> Twitter
+                      </a>
+                      <a target="_blank"
+                         href="https://telegram.me/share/url?url=
+                           {{ request.build_absolute_uri }}{{ post.get_absolute_url }}"
+                         class="btn btn-sm btn-outline-primary">
+                        <i class="fab fa-telegram left"></i> Telegram
+                      </a>
                     </div>
                   </div>
-                  {% endfor %}
+                </div>
+                <div class="container-fluid px-5" style="background-color: #d7dadf">
+                  <h5 class="font-weight-bold mt-5">
+                    <strong>YOU MIGHT ALSO LIKE</strong>
+                  </h5>
+                  <hr class="red title-hr">
+                  <div class="row mb-4">
+                    {% for related_post in related_posts %}
+                      <div class="col-lg-4 my-3">
+                        <div class="card h-100">
+                          <img src="{{ related_post.image.url }}" class="card-img-top" alt="sample image">
+                          <div class="card-body">
+                            <h4 class="card-title font-weight-bold">
+                              {{ related_post.title }}
+                            </h4>
+                            <small class="mb-1">
+                              {{ related_post.date_published|date:"F Y" }}
+                            </small>
+                          </div>
+                          <div class="card-footer">
+                            <a href="{% url 'blog:post' related_post.slug %}"
+                               class="btn btn-info btn-block font-weight-bold">Read Post</a>
+                          </div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      {% if comments|length != 0 %}
-      <div>
-        <div class="text-center text-md-left">
-          <div class="text-center my-5">
-            <h3 class="font-weight-bold">Comments
-              <span class="badge badge-secondary">{{comments|length}}</span>
-            </h3>
-          </div>
-          {% for comment in comments %}
-          <div class="row mb-5">
-            <div class="col-sm-2 col-12 mb-3">
-              <img src="{{comment.get_avatar}}" alt="{{comment.get_info.0}} Avatar">
-            </div>
-            <div class="col-sm-10 col-12">
-              <h5 class="font-weight-bold mb-0">{{comment.get_info.0|capfirst}}{% if comment.get_info.1 %}
-                {{ comment.get_info.1|capfirst }}{% endif %}</h5>
-              <div class="card-data">
-                <small class="text-muted mt-0">{{comment.date_added|date:'Y/m/d'}}</small>
+        {% if comments|length != 0 %}
+          <div>
+            <div class="text-center text-md-left">
+              <div class="text-center my-5">
+                <h3 class="font-weight-bold">Comments
+                  <span class="badge badge-secondary">{{ comments|length }}</span>
+                </h3>
               </div>
-              <p>{{comment.text}}</p>
+              {% for comment in comments %}
+                <div class="row mb-5">
+                  <div class="col-sm-2 col-12 mb-3">
+                    <img src="{{ comment.get_avatar }}" alt="{{ comment.get_info.0 }} Avatar">
+                  </div>
+                  <div class="col-sm-10 col-12">
+                    <h5 class="font-weight-bold mb-0">{{ comment.get_info.0|capfirst }}{% if comment.get_info.1 %}
+                      {{ comment.get_info.1|capfirst }}{% endif %}</h5>
+                    <div class="card-data">
+                      <small class="text-muted mt-0">{{ comment.date_added|date:'Y/m/d' }}</small>
+                    </div>
+                    <p>{{ comment.text }}</p>
+                  </div>
+                </div>
+              {% endfor %}
             </div>
           </div>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
-      <div class="mb-4 mt-4">
-        <div class="row">
-          <div class="col-lg-12">
-            <h3 class="text-center pt-5 font-weight-bold">Leave a comment</h3>
-            {% if comments|length == 0 %}<h4 class="font-weight-bold text-center my-2"><span
-            class="badge badge-warning">Be the first one to comment!</span></h4>{% endif %}
-            <hr>
-            <form method="POST"> {% csrf_token %}
-              {% if request.user.is_authenticated %}
-              <p class="text-center">Logged in as <a href="{% url 'users:profile' %}">{{request.user.first_name}}</a>.
-                <a href="{% url 'users:signout' %}?next={{ request.path }}">Logout?</a></p>
-              {% else %}
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="name">Your name</label>
-                  <input id="name" type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}"
-                         name="name" value="{{form.name.value|default:''}}">
-                  {% if form.name.errors %}
-                  <div class="invalid-feedback">
-                    {{ form.name.errors }}
+        {% endif %}
+        <div class="mb-4 mt-4">
+          <div class="row">
+            <div class="col-lg-12">
+              <h3 class="text-center pt-5 font-weight-bold">Leave a comment</h3>
+              {% if comments|length == 0 %}<h4 class="font-weight-bold text-center my-2"><span
+                class="badge badge-warning">Be the first one to comment!</span></h4>{% endif %}
+              <hr>
+              <form method="POST"> {% csrf_token %}
+                {% if request.user.is_authenticated %}
+                  <p class="text-center">Logged in as <a
+                    href="{% url 'users:profile' %}">{{ request.user.first_name }}</a>.
+                    <a href="{% url 'users:logout' %}?next={{ request.path }}">Logout?</a></p>
+                {% else %}
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="name">Your name</label>
+                      <input id="name" type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                             name="name" value="{{ form.name.value|default:'' }}">
+                      {% if form.name.errors %}
+                        <div class="invalid-feedback">
+                          {{ form.name.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="email">Your email</label>
+                      <input id="email" type="email"
+                             class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                             name="email" value="{{ form.email.value|default:'' }}">
+                      {% if form.email.errors %}
+                        <div class="invalid-feedback">
+                          {{ form.email.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
                   </div>
-                  {% endif %}
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="email">Your email</label>
-                  <input id="email" type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
-                         name="email" value="{{form.email.value|default:''}}">
-                  {% if form.email.errors %}
-                  <div class="invalid-feedback">
-                    {{ form.email.errors }}
-                  </div>
-                  {% endif %}
-                </div>
-              </div>
-              {% endif %}
-              <div class="form-group">
-                <label for="text">Your comment</label>
-                <textarea rows='3' name="text" id="text"
-                          class="form-control {% if form.text.errors %}is-invalid{% endif %}"
-                          rows="3">{{form.text.value|default:""}}</textarea>
-                {% if form.text.errors %}
-                <div class="invalid-feedback">
-                  {{ form.text.errors }}
-                </div>
                 {% endif %}
-              </div>
-              <div class="text-center mt-4">
-                <input type="submit" class="btn btn-block btn-outline-primary">
-              </div>
-            </form>
+                <div class="form-group">
+                  <label for="text">Your comment</label>
+                  <textarea rows='3' name="text" id="text"
+                            class="form-control {% if form.text.errors %}is-invalid{% endif %}"
+                            rows="3">{{ form.text.value|default:"" }}</textarea>
+                  {% if form.text.errors %}
+                    <div class="invalid-feedback">
+                      {{ form.text.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="text-center mt-4">
+                  <input type="submit" class="btn btn-block btn-outline-primary">
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
+      {% include 'blog/sections/sidebar.html' %}
     </div>
-    {% include 'blog/sections/sidebar.html' %}
   </div>
-</div>
-  {% endblock %}
+{% endblock %}
