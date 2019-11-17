@@ -153,3 +153,9 @@ VALID_ATTACHMENT_EXTENSIONS = {
 }
 
 DEFAULT_POST_NEW_DAYS = 7
+
+# Library Information (used in reports)
+LIBRARY_INFORMATION = {
+    'NAME': 'MIT Library',
+    'DATE_ESTABLISHED': 'Jan 1952',
+}
