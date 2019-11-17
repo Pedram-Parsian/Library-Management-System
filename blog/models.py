@@ -12,15 +12,19 @@ class PostManager(models.Manager):
 
 
 class Post(models.Model):
+    DRAFT = 10
+    PUBLISHED = 20
+    WITHDRAWN = 30
     STATUS_CHOICES = (
-        ('draft', 'Draft'),
-        ('published', 'Published'),
-        ('archived', 'Archived'),
+        (DRAFT, 'Draft'),
+        (PUBLISHED, 'Published'),
+        (WITHDRAWN, 'Withdrawn'),
     )
+    # todo `REGISTERED ONLY POSTS` + `SPECIAL MEMBERS POSTS`
     image = models.ImageField(upload_to='static_img/', null=True, blank=True)
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     slug = models.SlugField(max_length=255, blank=True, unique=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    status = models.IntegerField(choices=STATUS_CHOICES, default=DRAFT)
     body = models.TextField(max_length=200000)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
