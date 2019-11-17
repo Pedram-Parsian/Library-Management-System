@@ -51,7 +51,7 @@ class Post(models.Model):
     @staticmethod
     def get_archives():
         archive = []
-        for date in Post.objects.filter(status='published').values_list('date_published', flat=True):
+        for date in Post.objects.filter(status=Post.PUBLISHED).values_list('date_published', flat=True):
             if (date.strftime('%B %Y'), date.strftime('%Y'), date.strftime('%m')) not in archive:
                 archive.append((date.strftime('%B %Y'), date.strftime('%Y'), date.strftime('%m')))
         return archive
@@ -64,7 +64,7 @@ class Post(models.Model):
 
     @staticmethod
     def get_popular_posts():
-        return sorted(Post.objects.filter(status='published'), key=lambda t: t.get_post_score(), reverse=True)[:5]
+        return sorted(Post.objects.filter(status=Post.PUBLISHED), key=lambda t: t.get_post_score(), reverse=True)[:5]
 
     def get_related_posts(self):
         # get posts with same tags _or_ same categories
