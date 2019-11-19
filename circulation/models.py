@@ -5,6 +5,7 @@ from documents.models import Document
 from users.models import User, Member
 from accounting.models import Payment
 
+
 # Terminology:
 # issue (checkout)
 # return
@@ -13,15 +14,23 @@ from accounting.models import Payment
 
 
 class Issue(models.Model):
+    PENDING = 10
+    PENDING_OVERDUE = 20
+    DONE = 30
+    DONE_OVERDUE = 40
+    ISSUE_STATUS = (
+        (PENDING, 'Pending'),
+        (PENDING_OVERDUE, 'Pending Overdue'),
+        (DONE, 'Done'),
+        (DONE_OVERDUE, 'Done Overdue'),
+    )
     member = models.ForeignKey(Member, on_delete=models.PROTECT)
     document = models.ForeignKey(Document, on_delete=models.PROTECT)
     timestamp = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField(blank=True, null=True)
     # after the member had returned the book, this will be filled:
     returned_date = models.DateTimeField(blank=True, null=True)
-    # and there may be a fine:
-    # it's considered as ManyToManyField because there may be a OVERDUE & DAMAGE fine at the same time
-    fines = models.ManyToManyField('Fine', blank=True)
+    status = models.PositiveSmallIntegerField(choices=ISSUE_STATUS, blank=True)
 
     @property
     def has_renews(self):
@@ -41,8 +50,8 @@ class Fine(models.Model):
         (DAMAGE, 'Damage'),
         (OTHER, 'Other'),
     )
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     reason = models.IntegerField(choices=REASON_CHOICES)
-    member = models.ForeignKey(Member, on_delete=models.PROTECT)
     amount = models.IntegerField()
     staff = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
