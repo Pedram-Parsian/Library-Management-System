@@ -4,6 +4,9 @@ from .secrets import (
     _DB_PASSWORD,
     _RECAPTCHA_PUBLIC_KEY,
     _RECAPTCHA_PRIVATE_KEY,
+    _SMS_USERNAME,
+    _SMS_PASSWORD,
+    _SMS_PHONE_NUMBER,
 )
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -159,3 +162,8 @@ LIBRARY_INFORMATION = {
     'NAME': 'MIT Library',
     'DATE_ESTABLISHED': 'Jan 1952',
 }
+
+# SMS sending panel information:
+SMS_USERNAME = _SMS_USERNAME
+SMS_PASSWORD = _SMS_PASSWORD
+SMS_PHONE_NUMBER = _SMS_PHONE_NUMBER
