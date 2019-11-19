@@ -2,8 +2,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
-
-from lms.utilities import get_gravatar_url
 from users.models import Member
 
 
@@ -105,6 +103,40 @@ class Document(models.Model):
         document = Document.objects.get(id=document_id)
         document.rating = document_average_rating
         document.save()
+
+    def set_status(self):
+        """
+        Set the document status based on issues & reserves status
+        First, we prevent further overhead if the document was marked as LOST.
+        After that, we check the following things in order:
+            *) if there is an _active_ issue for the document,
+                we set the expected_status to LOANED
+                **) If there is any renews on top of the issue, the Issue object's status
+                    will consider that.
+            *) otherwise, if there is an _active_ reserve for the document,
+                we set the expected_status to RESERVED
+            *) if none of the above situations happen,
+                we set the document status to AVAILABLE
+        Finally, if the current documents status was different from the expected status,
+        we will change the status and save that.
+        """
+        from circulation.models import Issue, Reserve
+        if self.status == Document.LOST:
+            return
+
+        # in the following `if`, I'm assuming that the DB data is **valid**
+        # (e.g. there may be more than one _active_ issue for the document)
+        if self.issue_set.filter(status__in=(Issue.PENDING, Issue.PENDING_OVERDUE)).exists():
+            expected_status = Document.LOANED
+        else:
+            if self.reserve_set.filter(status=Reserve.AVAILABLE):
+                expected_status = Document.RESERVED
+            else:
+                expected_status = Document.AVAILABLE
+
+        if self.status != expected_status:
+            self.status = expected_status
+            self.save()
 
     def __str__(self):
         return f'{self.title} ({self.call_no})'
