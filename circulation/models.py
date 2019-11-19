@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
+
 from users.models import Member
 from documents.models import Document
 from users.models import User, Member
@@ -30,7 +32,29 @@ class Issue(models.Model):
     due_date = models.DateTimeField(blank=True, null=True)
     # after the member had returned the book, this will be filled:
     returned_date = models.DateTimeField(blank=True, null=True)
+    # todo remove the possible "-----" choice in admin
     status = models.PositiveSmallIntegerField(choices=ISSUE_STATUS, blank=True)
+
+    def set_status(self):
+        if not self.pk:
+            self.status = Issue.PENDING
+        else:
+            # the max_due_date will have either the *most far* due date or the instance due_date itself,
+            # if there is not any renews for the issue:
+            max_due_date = self.renew_set.order_by(
+                '-due_date').first().due_date if self.renew_set.exists() else self.due_date
+            if self.returned_date:
+                # user has returned the document
+                if self.returned_date > max_due_date:
+                    self.status = Issue.DONE_OVERDUE
+                else:
+                    self.status = Issue.DONE
+            else:
+                # user has not returned document
+                if timezone.now() >= max_due_date:
+                    self.status = Issue.PENDING_OVERDUE
+                else:
+                    self.status = Issue.PENDING
 
     @property
     def has_renews(self):
@@ -103,6 +127,9 @@ class Reserve(models.Model):
     # todo check if CASCADE is the right choice here
     issue = models.ForeignKey(Issue, blank=True, null=True, on_delete=models.CASCADE)
     description = models.TextField(max_length=settings.TEXTFIELD_MAX_LENGTH, blank=True, null=True)
+
+    def set_status(self):
+        ...
 
     def __str__(self):
         return f'{self.member} reserve {self.document} @ {self.timestamp} - {self.get_status_display()}'
