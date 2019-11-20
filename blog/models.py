@@ -95,7 +95,7 @@ class PostTag(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     slug = models.CharField(max_length=50, blank=True, unique=True)
 
-    def get_post_count(self):
+    def get_posts_count(self):
         return self.post_set.count()
 
     @staticmethod
@@ -128,7 +128,7 @@ class PostCategory(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     slug = models.CharField(max_length=50, blank=True, unique=True)
 
-    def get_post_count(self):
+    def get_posts_count(self):
         return self.post_set.count()
 
     def __str__(self):
