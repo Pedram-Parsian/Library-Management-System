@@ -127,6 +127,7 @@ class PostTag(models.Model):
 class PostCategory(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     slug = models.CharField(max_length=50, blank=True, unique=True)
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
 
     def get_posts_count(self):
         return self.post_set.count()
