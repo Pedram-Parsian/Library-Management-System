@@ -19,14 +19,14 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(models.PostCategory)
 class PostCategoryAdmin(admin.ModelAdmin):
-    ...
+    list_display = ['title', 'get_posts_count']
 
 
 @admin.register(models.PostTag)
 class PostTagAdmin(admin.ModelAdmin):
-    ...
+    list_display = ['title', 'get_posts_count']
 
 
 @admin.register(models.PostComment)
 class PostCommentAdmin(admin.ModelAdmin):
-    ...
+    list_display = ['member', 'post', 'get_status_display']
