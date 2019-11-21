@@ -81,7 +81,7 @@ class Post(models.Model):
         # if these related posts were 3 or more, that's ok,
         # but if not, we will add some other posts to it based on score:
         if len(related_posts) < 3:
-            related_posts.update([x for x in Post.get_popular_posts()])
+            related_posts.update([x for x in Post.get_popular_posts() if x.pk != self.pk])
         return sorted(related_posts, key=lambda t: t.get_post_score(), reverse=True)[:3]
 
     def get_tags(self):
