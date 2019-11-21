@@ -2,3 +2,4 @@
 *.log
 *.pdf
 *.gz
+generated_reports/
