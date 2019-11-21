@@ -104,7 +104,7 @@ class PostTag(models.Model):
         TAG_MAX_SIZE = 25
         result = {}
         for tag in PostTag.objects.all():
-            tag_post_count = tag.get_post_count()
+            tag_post_count = tag.get_posts_count()
             if tag_post_count > 0:
                 result[tag] = tag_post_count
         if result:

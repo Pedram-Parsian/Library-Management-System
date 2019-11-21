@@ -1,83 +1,83 @@
 {% load static %}
 <div class="col-lg-3 col-12">
+  <div class="card card-body pb-0">
+    <p class="font-weight-bold text-center py-2 mb-2">
+      <strong>POPULAR POSTS</strong>
+    </p>
+    {% for pop_post in popular_posts %}
+      <div class="row mb-4">
+        <div class="col-5">
+          <img src="{{ pop_post.image.url }}" class="img-fluid rounded-0" alt="{{ poo_post.titel }} Image">
+        </div>
+        <div class="col-7">
+          <h6 class="mt-0">
+            <a href="{% url 'blog:post' pop_post.slug %}">
+              <strong>{{ pop_post.title }}</strong>
+            </a>
+          </h6>
+          <p class="mb-0">
+            {{ pop_post.date_published|date:"Y/m/d" }}
+          </p>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center">Looks empty!</p>
+    {% endfor %}
+  </div>
+  <div class="my-5">
     <div class="card card-body pb-0">
       <p class="font-weight-bold text-center py-2 mb-2">
-        <strong>POPULAR POSTS</strong>
+        <strong>ARCHIVE</strong>
       </p>
-      {% for pop_post in popular_posts %}
-        <div class="row mb-4">
-          <div class="col-5">
-            <img src="{{pop_post.image.url}}" class="img-fluid rounded-0" alt="{{poo_post.titel}} Image">
-          </div>
-          <div class="col-7">
-            <h6 class="mt-0">
-              <a href="{% url 'blog:post' pop_post.slug %}">
-                <strong>{{pop_post.title}}</strong>
-              </a>
-            </h6>
-              <p class="mb-0">
-                {{pop_post.date_published|date:"Y/m/d"}}
-              </p>
-            </div>
-          </div>
-        {% empty %}
-        <p class="text-center">Looks empty!</p>
-        {% endfor %}
-      </div>
-    <div class="my-5">
-      <div class="card card-body pb-0">
-          <p class="font-weight-bold text-center py-2 mb-2">
-            <strong>ARCHIVE</strong>
-          </p>
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <ul class="list-unstyled">
-                {% for title, year, month in archives %}
-                <li>
-                  <p class="mb-1">
-                    <a href="{% url 'blog:archive' year month %}">{{ title }}</a>
-                  </p>
-                </li>
-                {% empty %}
-                <p class="text-center">Looks empty!</p>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-      </div>
-    </div>
-    <div class="mb-5">
-      <div class="card card-body pb-0">
-          <p class="font-weight-bold text-center py-2 mb-2">
-            <strong>CATEGORIES</strong>
-          </p>
-          <ul class="list-unstyled mb-3 text-center">
-            {% for category in categories %}
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <ul class="list-unstyled">
+            {% for title, year, month in archives %}
               <li>
-                <p class="mb-0">
-                  <a href="{% url 'blog:blog_category' category.slug %}">
-                    {{ category.title|capfirst }} ({{category.get_post_count}})
-                  </a>
+                <p class="mb-1">
+                  <a href="{% url 'blog:archive' year month %}">{{ title }}</a>
                 </p>
-            </li>
+              </li>
             {% empty %}
-            <p class="text-center">Looks empty!</p>
+              <p class="text-center">Looks empty!</p>
             {% endfor %}
           </ul>
-      </div>
-    </div>
-    <div class="mb-5">
-      <div class="card card-body pb-0">
-          <p class="font-weight-bold text-center py-2 mb-2">
-            <strong>TAGS</strong>
-          </p>
-          <div class="mb-3">
-            {% for tag, size in tags %}
-            <a href="{% url 'blog:blog_tag' tag.slug %}" style="font-size: {{size}}px;">{{ tag.title }}</a>
-            {% empty %}
-            <p class="text-center">Looks empty!</p>
-            {% endfor %}
-          </div>
+        </div>
       </div>
     </div>
   </div>
+  <div class="mb-5">
+    <div class="card card-body pb-0">
+      <p class="font-weight-bold text-center py-2 mb-2">
+        <strong>CATEGORIES</strong>
+      </p>
+      <ul class="list-unstyled mb-3 text-center">
+        {% for category in categories %}
+          <li>
+            <p class="mb-0">
+              <a href="{% url 'blog:blog_category' category.slug %}">
+                {{ category.title|capfirst }} ({{ category.get_posts_count }})
+              </a>
+            </p>
+          </li>
+        {% empty %}
+          <p class="text-center">Looks empty!</p>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="mb-5">
+    <div class="card card-body pb-0">
+      <p class="font-weight-bold text-center py-2 mb-2">
+        <strong>TAGS</strong>
+      </p>
+      <div class="mb-3">
+        {% for tag, size in tags %}
+          <a href="{% url 'blog:blog_tag' tag.slug %}" style="font-size: {{ size }}px;">{{ tag.title }}</a>
+        {% empty %}
+          <p class="text-center">Looks empty!</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
