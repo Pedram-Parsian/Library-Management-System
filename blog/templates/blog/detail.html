@@ -46,6 +46,8 @@
                       </a>
                       <a target="_blank"
                          href="https://www.linkedin.com/shareArticle?mini=true&url=
+
+
                            {{ request.build_absolute_uri }}{{ post.get_absolute_url }}&title={{ post.title }}&summary=This is the article summary!&source=http://pedram-parsian.com"
                          class="btn btn-sm btn-outline-primary">
                         <i class="fab fa-linkedin-in left"></i> Linked In
@@ -65,33 +67,35 @@
                     </div>
                   </div>
                 </div>
-                <div class="container-fluid px-5" style="background-color: #d7dadf">
-                  <h5 class="font-weight-bold mt-5">
-                    <strong>YOU MIGHT ALSO LIKE</strong>
-                  </h5>
-                  <hr class="red title-hr">
-                  <div class="row mb-4">
-                    {% for related_post in related_posts %}
-                      <div class="col-lg-4 my-3">
-                        <div class="card h-100">
-                          <img src="{{ related_post.image.url }}" class="card-img-top" alt="sample image">
-                          <div class="card-body">
-                            <h4 class="card-title font-weight-bold">
-                              {{ related_post.title }}
-                            </h4>
-                            <small class="mb-1">
-                              {{ related_post.date_published|date:"F Y" }}
-                            </small>
-                          </div>
-                          <div class="card-footer">
-                            <a href="{% url 'blog:post' related_post.slug %}"
-                               class="btn btn-info btn-block font-weight-bold">Read Post</a>
+                {% if related_posts %}
+                  <div class="container-fluid px-5" style="background-color: #d7dadf">
+                    <h5 class="font-weight-bold mt-5">
+                      <strong>YOU MIGHT ALSO LIKE</strong>
+                    </h5>
+                    <hr class="red title-hr">
+                    <div class="row mb-4">
+                      {% for related_post in related_posts %}
+                        <div class="col-lg-4 my-3">
+                          <div class="card h-100">
+                            <img src="{{ related_post.image.url }}" class="card-img-top" alt="sample image">
+                            <div class="card-body">
+                              <h4 class="card-title font-weight-bold">
+                                {{ related_post.title }}
+                              </h4>
+                              <small class="mb-1">
+                                {{ related_post.date_published|date:"F Y" }}
+                              </small>
+                            </div>
+                            <div class="card-footer">
+                              <a href="{% url 'blog:post' related_post.slug %}"
+                                 class="btn btn-info btn-block font-weight-bold">Read Post</a>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    {% endfor %}
+                      {% endfor %}
+                    </div>
                   </div>
-                </div>
+                {% endif %}
               </div>
             </div>
           </div>
