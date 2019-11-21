@@ -157,8 +157,8 @@ class PostComment(models.Model):
 
     def get_avatar(self):
         if not self.member_id:
-            return get_gravatar_url(self.email)
-        return self.member.user.get_avatar()
+            return get_gravatar_url(self.email, size=45)
+        return self.member.user.get_avatar(size=45)
 
     def get_info(self):
         if self.member_id:
