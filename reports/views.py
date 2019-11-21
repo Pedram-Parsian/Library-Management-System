@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.template.loader import render_to_string
+from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.detail import BaseDetailView
 
@@ -42,9 +42,14 @@ class MembersReport(ListView):
     model = Member
 
 
-class MembersCards(ListView):
-    # just return a pdf
-    model = Member
+class MembersCards(View):
+    def get(self, request, ids):
+        from reports.utilities import generate_membership_card
+        path_to_pdf = generate_membership_card(ids)
+        with open(path_to_pdf, 'rb') as member_card:
+            response = HttpResponse(member_card.read(), content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment;filename=membership_cards.pdf'
+            return response
 
 
 class IssueReceiptReport(DetailView):
