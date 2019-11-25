@@ -17,6 +17,7 @@ django-livereload-server==0.3.2
 django-recaptcha==2.0.5
 django-widget-tweaks==1.4.5
 djangorestframework==3.10.3
+docutils==0.15.2
 et-xmlfile==1.0.1
 graphviz==0.13
 html5lib==1.0.1
