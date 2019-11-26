@@ -3,8 +3,10 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.contrib import messages
+
+from blog.models import Post
 from . import forms
 from . import models
 
@@ -30,6 +32,12 @@ class BlogDetailView(FormMixin, DetailView):
     template_name = 'blog/detail.html'
     model = models.Post
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if not (self.request.user.is_authenticated and self.request.user.is_superuser) and obj.status != Post.PUBLISHED:
+            raise Http404()
+        return obj
+
     def get_form_class(self):
         return forms.LogedInUser_CommentForm if self.request.user.is_authenticated else forms.AnonymousUser_CommentForm
 
@@ -40,7 +48,8 @@ class BlogDetailView(FormMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['categories'] = models.PostCategory.objects.all()
         context['tags'] = models.PostTag.get_all_with_size()
-        context['comments'] = models.PostComment.objects.filter(post=self.get_object(), status=models.PostComment.APPROVED)
+        context['comments'] = models.PostComment.objects.filter(post=self.get_object(),
+                                                                status=models.PostComment.APPROVED)
         context['archives'] = models.Post.get_archives()
         context['popular_posts'] = models.Post.get_popular_posts()
         context['related_posts'] = self.get_object().get_related_posts()
@@ -138,4 +147,5 @@ def LikePostView(request, post_id):
         messages.success(request, 'Thanks for your feedback!')
         return HttpResponseRedirect(reverse('blog:post', kwargs={'slug': post.slug}))
     else:
-        return HttpResponseRedirect(f'{reverse("users:login")}?next={reverse("like_post", kwargs={"post_id": post_id})}')
+        return HttpResponseRedirect(
+            f'{reverse("users:login")}?next={reverse("like_post", kwargs={"post_id": post_id})}')
