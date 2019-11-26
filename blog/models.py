@@ -1,4 +1,6 @@
 from datetime import timedelta
+
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -34,6 +36,13 @@ class Post(models.Model):
     categories = models.ManyToManyField('PostCategory', blank=True)
 
     objects = PostManager()
+
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        else:
+            no_picture_filename = settings.BLOG_NO_PICTURE_IMAGE
+            return static(no_picture_filename)
 
     def is_new(self):
         if self.date_published:
