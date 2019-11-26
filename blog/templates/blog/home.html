@@ -17,7 +17,7 @@
               <div class="row mb-4">
                 <div class="col-md-12">
                   <div class="card">
-                    <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+                    <img src="{{ post.get_image_url }}" class="card-img-top" alt="{{ post.title }}">
                     <div class="card-body mx-4">
                       <h4 class="card-title">
                         {% if post.is_new %}
@@ -53,7 +53,7 @@
               <div class="row mb-4">
                 <div class="col-md-12">
                   <div class="card bg-warning">
-                    <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+                    <img src="{{ post.get_image_url }}" class="card-img-top" alt="{{ post.title }}">
                     <div class="card-body mx-4">
                       <h4 class="card-title">
                         <a class="badge badge-pill badge-info">Draft</a>
