@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
+from django.db.models import Count
 from django.urls import reverse
 from users.models import Member
 
@@ -137,6 +138,13 @@ class Document(models.Model):
         if self.status != expected_status:
             self.status = expected_status
             self.save()
+
+    @staticmethod
+    def get_top_ten_documents():
+        return Document.objects.filter(status__in=[Document.AVAILABLE, Document.RESERVED, Document.LOANED]).annotate(
+            total_issues=Count('issue')).annotate(total_reserves=Count('reserve')).order_by('-total_issues',
+                                                                                            '-total_reserves',
+                                                                                            '-rating')[:10]
 
     def __str__(self):
         return f'{self.title} ({self.call_no})'
