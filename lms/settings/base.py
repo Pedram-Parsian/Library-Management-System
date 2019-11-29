@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'captcha',
     'bootstrap_modal_forms',
     'ckeditor',
+    'django_extensions',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'documents.apps.DocumentsConfig',
