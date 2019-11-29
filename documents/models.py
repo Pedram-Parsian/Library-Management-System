@@ -175,15 +175,18 @@ class Language(models.Model):
 
 
 class Author(BasePerson):
-    ...
+    def get_absolute_url(self):
+        return reverse('documents:author', args=[self.id])
 
 
 class Translator(BasePerson):
-    ...
+    def get_absolute_url(self):
+        return reverse('documents:translator', args=[self.id])
 
 
 class Editor(BasePerson):
-    ...
+    def get_absolute_url(self):
+        return reverse('documents:editor', args=[self.id])
 
 
 class Building(models.Model):
@@ -245,6 +248,9 @@ class Publisher(models.Model):
     date_of_establishment = models.DateField(blank=True, null=True)
     refer_to = models.ForeignKey('self', blank=True, null=True, on_delete=models.PROTECT)
 
+    def get_absolute_url(self):
+        return reverse('documents:publisher', args=[self.id])
+
     def get_documents_count(self):
         return self.document_set.count()
 
@@ -257,6 +263,9 @@ class Publisher(models.Model):
 class AgeClassification(models.Model):
     title = models.CharField(max_length=settings.CHARFIELD_MAX_LENGTH)
     min_age = models.PositiveSmallIntegerField()
+
+    def get_absolute_url(self):
+        return reverse('documents:age-classification', args=[self.id])
 
     def get_documents_count(self):
         return self.document_set.count()
