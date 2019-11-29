@@ -10,5 +10,6 @@ urlpatterns = [
     path('translator/<int:pk>/', views.TranslatorDetailView.as_view(), name='translator'),
     path('editor/<int:pk>/', views.EditorDetailView.as_view(), name='editor'),
     path('publisher/<int:pk>/', views.PublisherDetailView.as_view(), name='publisher'),
+    path('age-classifications/list/', views.AgeClassificationListView.as_view(), name='age-classifications'),
     path('age-classification/<int:pk>/', views.AgeClassificationDetailView.as_view(), name='age-classification'),
 ]
