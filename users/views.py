@@ -45,6 +45,7 @@ class UserLogoutView(LogoutView):
 class UserLoginView(LoginView):
     template_name = 'users/login.html'
     form_class = forms.LoginForm
+    redirect_authenticated_user = True
 
 
 class ProfileView(LoginRequiredMixin, FormView):
