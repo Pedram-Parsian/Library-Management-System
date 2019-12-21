@@ -33,6 +33,10 @@ _EMAIL_HOST_PASSWORD = 'Password (or app password) of your production email'
 adjust the timezone in `lms/settings/base.py` based on your location.
 
 
+## Deployment Tips
+- Currently, only _books_ are supported and handled by the application, not **digital items** (such as e-books, DVD, etc.)
+
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
