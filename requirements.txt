@@ -42,7 +42,9 @@ prompt-toolkit==3.0.1
 psycopg2-binary==2.8.4
 ptyprocess==0.6.0
 pycparser==2.19
+pydotplus==2.0.2
 Pygments==2.5.1
+pyparsing==2.4.5
 Pyphen==0.9.5
 python-magic==0.4.15
 pytz==2019.2
