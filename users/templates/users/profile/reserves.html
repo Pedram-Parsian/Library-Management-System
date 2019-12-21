@@ -13,7 +13,7 @@
             <div class="card-body">
               <h5 class="card-title">
                 <a href="{% url 'documents:detail' reserve.document.slug %}">
-                  <strong>{{reserve.document.title}}</strong>
+                  <strong>{{ reserve.document.title }}</strong>
                 </a>
               </h5>
               <hr>
@@ -26,7 +26,8 @@
                   <!-- calculate estimated date (based on current checkout) -->
                   <span class="badge badge-pill bg-primary text-right">Waiting (available @ tomorrow)</span>
                 {% elif reserve.status == reserve.PROCEED %}
-                  <span class="badge badge-pill bg-secondary text-right">Proceed @ {{ reserve.issue.timestamp|date:"d F Y" }}</span>
+                  <span
+                    class="badge badge-pill bg-secondary text-right">Proceed @ {{ reserve.issue.timestamp|date:"d F Y" }}</span>
                 {% elif reserve.status == reserve.EXPIRED %}
                   <span class="badge badge-pill bg-danger text-right">Expired</span>
                 {% elif reserve.status == reserve.FORCED_EXPIRED %}
@@ -34,35 +35,35 @@
                 {% endif %}
               </p>
               {% if reserve.status <= 20 %}
-              <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog"
-                   aria-labelledby="basicExampleModal" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLongTitle">Deleting your reserve</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      Are you sure?
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
-                      <a href="{% url 'users:delete_reserve' reserve.pk %}" class="btn btn-outline-danger">Yes</a>
+                <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog"
+                     aria-labelledby="basicExampleModal" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Deleting your reserve</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
+                        <a href="{% url 'users:delete_reserve' reserve.pk %}" class="btn btn-outline-danger">Yes</a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-                {% endif %}
+              {% endif %}
               <p class="small text-center mb-1 ml-1">
-                reserved @ {{reserve.timestamp|date:"d F Y"}}
+                reserved @ {{ reserve.timestamp|date:"d F Y" }}
               </p>
               {% if reserve.status <= 20 %}
-              <button type="button" class="btn btn-danger btn-block" data-toggle="modal"
-                      data-target="#basicExampleModal">
-                Remove
-              </button>
+                <button type="button" class="btn btn-danger btn-block" data-toggle="modal"
+                        data-target="#basicExampleModal">
+                  Remove
+                </button>
               {% endif %}
             </div>
           </div>
@@ -73,5 +74,6 @@
           <h5>Looks empty!</h5>
         </div>
       {% endfor %}
-    </div></div>
+    </div>
+  </div>
 {% endblock %}
