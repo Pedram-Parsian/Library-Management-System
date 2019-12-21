@@ -83,7 +83,7 @@
             <h1>No posts yet!</h1>
           {% endfor %}
         </div>
-        {% if page_obj.paginator.num_pages > 1 %}
+        {% if is_paginated %}
           <nav class="mb-5 pb-2">
             <ul class="pagination flex-center">
               <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
