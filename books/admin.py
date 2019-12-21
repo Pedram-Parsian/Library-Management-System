@@ -11,7 +11,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(models.Document)
 class DocumentAdmin(admin.ModelAdmin):
-    list_display = ['title', 'publisher', 'get_status_display', 'location', 'call_no']
+    list_display = ['title', 'publisher']
 
 
 @admin.register(models.DocumentType)
